@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
+
+    protected $table = "restaurant_type";
+    protected $fillable = ["description"];
 }
