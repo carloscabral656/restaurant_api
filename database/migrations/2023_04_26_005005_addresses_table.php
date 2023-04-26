@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('restaurant_type', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->string('address');
+            $table->string('neighborhood');
+            $table->integer('number');
+            $table->string('city');
+            $table->char('state', 30);
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaurant_type');
+        Schema::dropIfExists('addresses');
     }
 };
