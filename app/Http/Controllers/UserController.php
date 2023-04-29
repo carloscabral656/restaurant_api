@@ -34,7 +34,7 @@ class UserController extends Controller
     public function store(Request $user)
     {
         try{
-            $user = User::create($user);
+            $user = User::create($user->all());
             return response($user, 201)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
@@ -53,6 +53,10 @@ class UserController extends Controller
     {
         try{
             $user = User::find($id);
+            if(empty($user)){
+                return response("User doesn't found.", 404)
+                    ->header("Content-Type", "application/json"); 
+            }
             return response($user, 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
@@ -73,7 +77,11 @@ class UserController extends Controller
     {
         try{
             $user = User::find($id);
-            $user->update($request);
+            if(empty($user)){
+                return response("User doesn't found.", 404)
+                    ->header("Content-Type", "application/json"); 
+            }
+            $user->update($request->all());
             return response($user, 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
@@ -92,6 +100,10 @@ class UserController extends Controller
     {
         try{
             $user = User::find($id);
+            if(empty($user)){
+                return response("User doesn't found.", 404)
+                    ->header("Content-Type", "application/json"); 
+            }
             $user = $user->delete();
             return response($user, 200)
                     ->header("Content-Type", "application/json");
