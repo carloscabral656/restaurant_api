@@ -81,6 +81,7 @@ class UserController extends Controller
                 return response("User doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
             }
+            $user = User::find($id);
             $user->update($request->all());
             return response($user, 200)
                     ->header("Content-Type", "application/json");
@@ -105,7 +106,7 @@ class UserController extends Controller
                     ->header("Content-Type", "application/json"); 
             }
             $user = $user->delete();
-            return response($user, 200)
+            return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
