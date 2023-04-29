@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Restaurant;
+use App\Models\Menu;
 use Exception;
 use Illuminate\Http\Request;
 
-class RestaurantController extends Controller
+class MenuController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class RestaurantController extends Controller
     public function index()
     {
         try{
-            $restaurant = Restaurant::all();
-            return response($restaurant , 200)
+            $menus = Menu::all();
+            return response($menus , 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
@@ -31,11 +31,11 @@ class RestaurantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $restaurant)
+    public function store(Request $menu)
     {
         try{
-            $restaurant = Restaurant::create($restaurant->all());
-            return response($restaurant, 201)
+            $menu = Menu::create($menu->all());
+            return response($menu, 201)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
@@ -52,12 +52,12 @@ class RestaurantController extends Controller
     public function show($id)
     {
         try{
-            $restaurant = Restaurant::find($id);
-            if(empty($restaurant)){
-                return response("Restaurant doesn't found.", 404)
+            $menu = Menu::find($id);
+            if(empty($menu)){
+                return response("Menu doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
             }
-            return response($restaurant, 200)
+            return response($menu, 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
@@ -73,17 +73,17 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $restaurant, $id)
+    public function update(Request $menu, $id)
     {
         try{
-            $restaurant = Restaurant::find($id);
-            if(empty($user)){
-                return response("Restaurant doesn't found.", 404)
+            $menu = Menu::find($id);
+            if(empty($menu)){
+                return response("Menu doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
             }
-            $restaurant = Restaurant::find($id);
-            $restaurant->update($restaurant->all());
-            return response($restaurant, 200)
+            $menu = Menu::find($id);
+            $menu->update($menu->all());
+            return response($menu, 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
@@ -100,12 +100,12 @@ class RestaurantController extends Controller
     public function destroy($id)
     {
         try{
-            $restaurant = Restaurant::find($id);
-            if(empty($restaurant)){
-                return response("Restaurant doesn't found.", 404)
+            $menu = Menu::find($id);
+            if(empty($menu)){
+                return response("Menu doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
             }
-            $restaurant = $restaurant->delete();
+            $menu = $menu->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
