@@ -12,6 +12,10 @@ class Menu extends Model
     protected $table = "menus";
     protected $fillable = ["id", "id_restaurant"];
 
+    public function itens(){
+        return $this->hasMany(Item::class, 'id_menu', 'id');
+    }
+
 }
 
 
