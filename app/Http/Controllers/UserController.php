@@ -83,9 +83,10 @@ class UserController extends Controller
             if(empty($user)){
                 return response("User doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
+            }else if(!empty($user) && $request->get('id_roles')){
+                $user->roles()->sync($request->get('id_roles'));
             }
-            $user = User::find($id);
-            $user->update($request->all());
+            $user->update($request->except('id_roles'));
             return response($user, 200)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
