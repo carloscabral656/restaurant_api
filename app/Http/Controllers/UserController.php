@@ -31,10 +31,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $user)
+    public function store(Request $request)
     {
         try{
-            $user = User::create($user->all());
+            $user = User::create($request->all());
+            if(!empty($user) && $request->get('id_roles')){
+                $user->roles()->attach($request->get('id_roles'));
+            }
             return response($user, 201)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
@@ -105,6 +108,7 @@ class UserController extends Controller
                 return response("User doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
             }
+            $user->roles()->detach();
             $user = $user->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
