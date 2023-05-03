@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -34,12 +36,23 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try{
-            $user = User::create($request->all());
-            if(!empty($user) && $request->get('id_roles')){
-                $user->roles()->attach($request->get('id_roles'));
-            }
+            $request->validate([
+                'name'     => 'required',
+                'email'    => 'required',
+                'password' => 'required',
+            ]);
+            $user = DB::transaction(function($request){
+                $user = User::create($request->all());
+                if(!empty($user) && $request->get('id_roles')){
+                    $user->roles()->attach($request->get('id_roles'));
+                }
+                return $user;
+            });
             return response($user, 201)
                     ->header("Content-Type", "application/json");
+        }catch(ValidationException $v){
+            return response($v->errors(), 400)
+                ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
                     ->header("Content-Type", "application/json");
