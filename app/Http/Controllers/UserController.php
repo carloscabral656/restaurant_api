@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -34,12 +35,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try{
+            $request->validate($request->all(), [
+                'name'     => 'required',
+                'email'    => 'required',
+                'password' => 'required'
+            ]);
             $user = User::create($request->all());
             if(!empty($user) && $request->get('id_roles')){
                 $user->roles()->attach($request->get('id_roles'));
             }
             return response($user, 201)
                     ->header("Content-Type", "application/json");
+        }catch(ValidationException $v){
+            return response($v->getMessage(), 422)
+                ->header("Content-Type", "application/json");   
         }catch(Exception $e){
             return response($e->getMessage(), 400)
                     ->header("Content-Type", "application/json");
@@ -83,7 +92,7 @@ class UserController extends Controller
             if(empty($user)){
                 return response("User doesn't found.", 404)
                     ->header("Content-Type", "application/json"); 
-            }else if(!empty($user) && $request->get('id_roles')){
+            }else if($request->get('id_roles')){
                 $user->roles()->sync($request->get('id_roles'));
             }
             $user->update($request->except('id_roles'));
@@ -110,7 +119,7 @@ class UserController extends Controller
                     ->header("Content-Type", "application/json"); 
             }
             $user->roles()->detach();
-            $user = $user->delete();
+            $user->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){

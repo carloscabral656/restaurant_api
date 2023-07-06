@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Restaurant;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RestaurantController extends Controller
 {
@@ -112,5 +113,34 @@ class RestaurantController extends Controller
             return response($e->getMessage(), 400)
                 ->header("Content-Type", "application/json"); 
         }
+    }
+
+    /**
+     * List a
+     * 
+     * 
+    */
+    public function filterRestaurantByCriteria(Request $request){
+        
+        // Creating 
+        $query = DB::table('restaurants as r');
+
+        // Filtering for name
+        if($request->has('name')){
+            $query->where('name', 'like', "%{request->get('name')}%");
+        }
+
+        // TODO: Filtering for price
+
+        // Filtering for menu itens
+        if($request->has('itemName')){
+            $query
+            ->join('menu as m', 'r.id', '=', 'm.id') // Restaurant's menu
+            ->join('item as i', 'm.id', '=', 'i.id')
+            ->where('i.name', 'like', "%{request->get('itemName')}%");
+        }
+
+        return $query->get();
+        // Finding 
     }
 }

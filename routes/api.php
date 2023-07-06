@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolerController;
 use App\Http\Controllers\UserController;
@@ -31,10 +32,17 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/address", AddressController::class);
     Route::resource("/gastronomy", GastronomyFactory::class);
     Route::resource("/restaurant-type", RestaurantType::class);
-    Route::resource("/restaurant", Restaurant::class);
+    Route::resource("/restaurant", RestaurantController::class);
     Route::resource("/menu", MenuController::class);
     Route::resource("/item", ItemController::class);
     Route::resource("/purchase", PurchaseController::class);
+
+
+    // Routes for the filters
+    Route::prefix('/filters')->group(function(){
+        Route::get('/restaurants', [RestaurantController::class, 'filterRestaurantByCriteria']);
+    });
+    
 });
 
 
