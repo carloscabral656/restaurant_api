@@ -56,10 +56,6 @@ class ControllerAbstract extends Controller
             DB::commit();
             return response($resourceCreated, 201)
                 ->header("Content-Type", "application/json");
-        }catch(ValidationException $v){
-            DB::rollBack();
-            return response($v->errors(), 400)
-                ->header("Content-Type", "application/json");
         }catch(Exception $e){
             DB::rollBack();
             return response($e->getMessage(), 400)
