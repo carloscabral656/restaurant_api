@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Addresses;
 
+use App\DTOs\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Addresses\AddressesServiceConcrete;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class AddressController extends Controller
@@ -21,9 +23,14 @@ class AddressController extends Controller
      */
     public function index()
     {
-        $address = $this->service->index();
-        return response($address , 200)
-            ->header("Content-Type", "application/json");
+        try{
+            $address = $this->service->index();
+            return response(new ApiResponse(true, $address, 'adasd') , 200)
+                ->header("Content-Type", "application/json");
+        } catch(\Exception $e){
+            return response(new ApiResponse(false, [], $e->getMessage()) , 200)
+                ->header("Content-Type", "application/json");
+        }
     }
 
     /**
@@ -34,7 +41,7 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        /*try{
             $request->validate([
                 'name'     => 'required',
                 'email'    => 'required',
@@ -49,7 +56,7 @@ class AddressController extends Controller
         }catch(\Exception $e){
             return response($e->getMessage(), 400)
                 ->header("Content-Type", "application/json");
-        }
+        }*/
     }
 
     /**
@@ -61,12 +68,12 @@ class AddressController extends Controller
     public function show($id)
     {
         try{
-            $user = User::find($id);
-            if(empty($user)){
-                return response("User doesn't found.", 404)
+            $address = $this->service->show($id);
+            if(empty($address)){
+                return response("Address doesn't found.", 404)
                     ->header("Content-Type", "application/json");
             }
-            return response($user, 200)
+            return response($address, 200)
                 ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)

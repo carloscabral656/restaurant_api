@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use MongoDB\Driver\Exception\ExecutionTimeoutException;
 
 class ServiceAbstract
 {
@@ -29,14 +31,7 @@ class ServiceAbstract
      */
     public function index()
     {
-        try{
-            $resource = $this->model->all();
-            return response($resource , 200)
-                ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
-        }
+        return $this->model->all();
     }
 
     /**
@@ -48,17 +43,7 @@ class ServiceAbstract
      */
     public function store(array $data)
     {
-        try{
-            DB::beginTransaction();
-            $resourceCreated = $this->model->create($data);
-            DB::commit();
-            return response($resourceCreated, 201)
-                ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            DB::rollBack();
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
-        }
+
     }
 
     /**
@@ -69,18 +54,7 @@ class ServiceAbstract
      */
     public function show($id)
     {
-        try{
-            $resource = $this->model->find($id);
-            if(empty($resource)){
-                return response("Resource doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            return response($resource, 200)
-                ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
-        }
+        return $this->model->find($id);
     }
 
 
