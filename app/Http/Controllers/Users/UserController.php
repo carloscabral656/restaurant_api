@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -41,19 +42,22 @@ class UserController extends Controller
                 'email'    => 'required',
                 'password' => 'required',
             ]);
-            $user = DB::transaction(function($request){
-                $user = User::create($request->all());
-                if(!empty($user) && $request->get('id_roles')){
-                    $user->roles()->attach($request->get('id_roles'));
-                }
-                return $user;
-            });
+
+            DB::beginTransaction();
+            $user = User::create($request->all());
+            if(!empty($user) && $request->get('id_roles')){
+                $user->roles()->attach($request->get('id_roles'));
+            }
+            DB::commit();
+
             return response($user, 201)
                     ->header("Content-Type", "application/json");
         }catch(ValidationException $v){
+            DB::rollBack();
             return response($v->errors(), 400)
                 ->header("Content-Type", "application/json");
         }catch(Exception $e){
+            DB::rollBack();
             return response($e->getMessage(), 400)
                     ->header("Content-Type", "application/json");
         }
@@ -123,7 +127,7 @@ class UserController extends Controller
                     ->header("Content-Type", "application/json"); 
             }
             $user->roles()->detach();
-            $user = $user->delete();
+            $user->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
