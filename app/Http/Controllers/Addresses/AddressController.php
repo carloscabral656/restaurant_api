@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Addresses;
 
+use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class AddressController extends Controller
 {
@@ -32,12 +34,24 @@ class AddressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $address)
+    public function store(Request $request)
     {
         try{
-            $address = Address::create($address->all());
+            $request->validate(
+                [
+                    'address' => 'required',
+                    "neighborhood" => 'required',
+                    "number" => 'required',
+                    "city" => 'required',
+                    "state" => 'required',
+                ]
+            );
+            $address = Address::create($request->all());
             return response($address, 201)
                     ->header("Content-Type", "application/json");
+        }catch(ValidationException $e){
+            return response($e->getMessage(), 400)
+                ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
                     ->header("Content-Type", "application/json");

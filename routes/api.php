@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PurchaseController;
@@ -26,7 +26,7 @@ use \App\Http\Controllers\RestaurantController;
 Route::prefix("/v1")->group(function(){
     Route::resource("/users", UserController::class);
     Route::resource("/roles", RoleController::class);
-    Route::resource("/address", AddressController::class);
+    Route::resource("/addresses", AddressController::class);
     Route::resource("/gastronomy", GastronomyFactory::class);
     Route::resource("/restaurant-type", RestaurantType::class);
     Route::resource("/restaurant", RestaurantController::class);

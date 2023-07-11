@@ -9,6 +9,6 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $table = "restaurant_type";
-    protected $fillable = ["description"];
+    protected $table = "addresses";
+    protected $fillable = ["address", "neighborhood", "number", "city", "state", "created_at", "updated_at"];
 }
