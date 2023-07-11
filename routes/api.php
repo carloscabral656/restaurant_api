@@ -36,7 +36,7 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/item", ItemController::class);
     Route::resource("/purchase", PurchaseController::class);
     Route::fallback(function(){
-        echo "Essa rota não funfa irmão.";
+        echo "This route doesn't work.";
     });
 });
 
