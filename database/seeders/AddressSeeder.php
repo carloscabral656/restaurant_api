@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Address;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AddressSeeder extends Seeder
 {
@@ -15,6 +16,14 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::factory(2)->create();
+        DB::table('addresses')->insert([
+            'address' => 'Teste 1',
+            'neighborhood' => 'teste 1',
+            'number' => 111,
+            'city' => 'Ube',
+            'state' => 'MG',
+            'created_at' => now(),
+            'updated_at' =>  now()
+        ]);
     }
 }

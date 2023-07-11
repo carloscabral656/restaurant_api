@@ -17,17 +17,17 @@ class ItemSeeder extends Seeder
     {
         DB::table("items")->insert([
             "name" => "ITEM 1",
-            "ide_menu" => 1
+            "id_menu" => 3
         ]);
 
         DB::table("items")->insert([
             "name" => "ITEM 2",
-            "ide_menu" => 1
+            "id_menu" => 3
         ]);
 
         DB::table("items")->insert([
             "name" => "ITEM 3",
-            "ide_menu" => 1
+            "id_menu" => 3
         ]);
     }
 }
