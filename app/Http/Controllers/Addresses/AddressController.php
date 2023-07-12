@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Addresses\AddressesServiceConcrete;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Spatie\FlareClient\Api;
 
 class AddressController extends Controller
 {
@@ -25,11 +26,9 @@ class AddressController extends Controller
     {
         try{
             $address = $this->service->index();
-            return response(new ApiResponse(true, $address, 'adasd') , 200)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $address, 'test'))->createResponse();
         } catch(\Exception $e){
-            return response(new ApiResponse(false, [], $e->getMessage()) , 200)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, 'test', 'teset'))->createResponse();
         }
     }
 

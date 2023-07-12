@@ -17,14 +17,16 @@ class ApiResponse
     protected $message;
 
     public function __construct($success = true, $data = [], $message){
-        $this->success = $success;
-        $this->data    = $message;
-        $this->message = $message;
+
     }
 
     public function createResponse(){
-        return response()
-            ->setContent($this->data)
-            ->header("Content-Type", "application/json");
+        return response()->json(
+            [
+                'success' => $this->success,
+                'content' => $this->data,
+                'message' => $this->message
+            ]
+        );
     }
 }
