@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * Created by PhpStorm.
  * User: ccabral
@@ -7,8 +7,6 @@
  */
 
 namespace App\DTOs;
-
-
 
 class ApiResponse
 {
