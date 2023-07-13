@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Addresses;
 use App\DTOs\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Addresses\AddressesServiceConcrete;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class AddressController extends Controller
 {
-    protected $service;
+
+    // Controller service
+    protected AddressesServiceConcrete $service;
 
     public function __construct(AddressesServiceConcrete $addressesServiceConcrete){
         $this->service = $addressesServiceConcrete;
@@ -25,11 +28,11 @@ class AddressController extends Controller
     {
         try{
             $address = $this->service->index();
-            return response(new ApiResponse(true, $address, 'adasd') , 200)
-                ->header("Content-Type", "application/json");
+            if(empty($address)) 
+                return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
+            return (new ApiResponse(true, $address, '', 200))->createResponse();
         } catch(\Exception $e){
-            return response(new ApiResponse(false, [], $e->getMessage()) , 200)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, null, '', 500))->createResponse();
         }
     }
 
@@ -41,22 +44,23 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        /*try{
+        try{
+            // Validate the user input
             $request->validate([
-                'name'     => 'required',
-                'email'    => 'required',
-                'password' => 'required',
+                'address'     => 'required',
+                'neighborhood'    => 'required',
+                'number' => 'required',
+                'city' => 'required',
+                'state' => 'required'
             ]);
-
-            return response($user, 201)
-                ->header("Content-Type", "application/json");
+            // Creating a resource in DataBase
+            $address = $this->service->store($request->all());
+            return (new ApiResponse(true, $address, 'Address created.', 201))->createResponse();
         }catch(ValidationException $v){
-            return response($v->errors(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $v->errors(), 'Validation failed.', 201))->createResponse();
         }catch(\Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
-        }*/
+            return (new ApiResponse(false, $e->getMessage(), 'Exception in API.', 500))->createResponse();
+        }
     }
 
     /**
@@ -69,15 +73,10 @@ class AddressController extends Controller
     {
         try{
             $address = $this->service->show($id);
-            if(empty($address)){
-                return response("Address doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            return response($address, 200)
-                ->header("Content-Type", "application/json");
+            if(empty($address)) return (new ApiResponse(false, null, 'Address not found.'))->createResponse();
+            return (new ApiResponse(true, $address, 'Address found.'))->createResponse();    
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, null, $e->getMessage()))->createResponse();
         }
     }
 

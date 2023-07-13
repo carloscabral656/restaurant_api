@@ -1,4 +1,4 @@
-    <?php
+<?php
 /**
  * Created by PhpStorm.
  * User: ccabral
@@ -13,16 +13,25 @@ class ApiResponse
     protected $success;
     protected $data;
     protected $message;
+    protected $statusCode;
 
-    public function __construct($success = true, $data = [], $message){
+    public function __construct($success = true, $data = [], $message = '', $code){
         $this->success = $success;
-        $this->data    = $message;
+        $this->data    = $data;
         $this->message = $message;
+        $this->statusCode    = $code;
     }
 
     public function createResponse(){
         return response()
-            ->setContent($this->data)
+            ->json(
+                [
+                    'success' => $this->success,
+                    'data'    => $this->data,
+                    'message' => $this->message
+                ]
+            )
+            ->setStatusCode($this->statusCode)
             ->header("Content-Type", "application/json");
     }
 }

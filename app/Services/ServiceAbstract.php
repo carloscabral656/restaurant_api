@@ -11,7 +11,7 @@ use MongoDB\Driver\Exception\ExecutionTimeoutException;
 class ServiceAbstract
 {
 
-    protected $model;
+    protected Model $model;
 
     /**
      * Construct the default Controller in the application.
@@ -43,7 +43,7 @@ class ServiceAbstract
      */
     public function store(array $data)
     {
-
+        return $this->model->create($data);
     }
 
     /**
