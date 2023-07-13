@@ -52,7 +52,7 @@ class ServiceAbstract
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function findBy($id)
     {
         return $this->model->find($id);
     }
@@ -67,19 +67,12 @@ class ServiceAbstract
      */
     public function update(array $data, $id)
     {
-        try{
-            $resource = $this->model->find($id);
-            if(empty($resource)){
-                return response("Resource doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            $resourceUpdated = $resource->update($data);
-            return response($resourceUpdated, 200)
-                ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+        $resource = $this->model->find($id);
+        if(empty($resource)){
+            return $resource;
         }
+        $resource->update($data);
+        return $this->model->find($id);
     }
 
     /**
@@ -90,18 +83,8 @@ class ServiceAbstract
      */
     public function destroy($id)
     {
-        try{
-            $resource = $this->model->find($id);
-            if(empty($resource)){
-                return response("Resource doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            $this->model->delete();
-            return response(null, 204)
-                ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
-        }
+        $resource = $this->model->find($id);
+        if(empty($resource)) return $resource;
+        return $resource->delete();
     }
 }

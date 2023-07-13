@@ -72,11 +72,11 @@ class AddressController extends Controller
     public function show($id)
     {
         try{
-            $address = $this->service->show($id);
-            if(empty($address)) return (new ApiResponse(false, null, 'Address not found.'))->createResponse();
-            return (new ApiResponse(true, $address, 'Address found.'))->createResponse();    
+            $address = $this->service->findBy($id);
+            if(empty($address)) return (new ApiResponse(false, null, 'Address not found.', 404))->createResponse();
+            return (new ApiResponse(true, $address, 'Address found.', 200))->createResponse();    
         }catch(Exception $e){
-            return (new ApiResponse(false, null, $e->getMessage()))->createResponse();
+            return (new ApiResponse(false, null, $e->getMessage(), 500))->createResponse();
         }
     }
 
@@ -91,19 +91,11 @@ class AddressController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $user = User::find($id);
-            if(empty($user)){
-                return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }else if(!empty($user) && $request->get('id_roles')){
-                $user->roles()->sync($request->get('id_roles'));
-            }
-            $user->update($request->except('id_roles'));
-            return response($user, 200)
-                ->header("Content-Type", "application/json");
+            $updated = $this->service->update($request->all(), $id);
+            if(empty($updated)) return (new ApiResponse(true, null, 'Address not found.', 404))->createResponse();
+            return (new ApiResponse(true, $updated, 'Address updated.', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, null, $e->getMessage(), 500))->createResponse();
         }
     }
 
@@ -116,18 +108,11 @@ class AddressController extends Controller
     public function destroy($id)
     {
         try{
-            $user = User::find($id);
-            if(empty($user)){
-                return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            $user->roles()->detach();
-            $user->delete();
-            return response(null, 204)
-                ->header("Content-Type", "application/json");
+            $address = $this->service->destroy($id);
+            if(empty($address)) return (new ApiResponse(false, null, 'Address not found.', 404))->createResponse();
+            return (new ApiResponse(true, null, 'Address deleted.', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, null, $e->getMessage(), 500))->createResponse();
         }
     }
 }
