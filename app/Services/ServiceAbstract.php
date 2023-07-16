@@ -27,9 +27,9 @@ class ServiceAbstract
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
-    public function index()
+    public function index() : Collection
     {
         return $this->model->all();
     }

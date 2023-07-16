@@ -10,5 +10,5 @@ class Gastronomy extends Model
     use HasFactory;
 
     protected $table = "gastronomies";
-    protected $fillable = [""];
+    protected $fillable = ["description"];
 }
