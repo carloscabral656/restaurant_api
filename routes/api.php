@@ -4,13 +4,13 @@ use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Users\UserController;
 use App\Models\RestaurantType;
 use Database\Factories\GastronomyFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\Roles\RolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ use \App\Http\Controllers\RestaurantController;
 
 Route::prefix("/v1")->group(function(){
     Route::resource("/users", UserController::class);
-    Route::resource("/roles", RoleController::class);
+    Route::resource("/roles", RolesController::class);
     Route::resource("/addresses", AddressController::class);
     Route::resource("/gastronomy", GastronomyFactory::class);
     Route::resource("/restaurant-type", RestaurantType::class);
