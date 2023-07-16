@@ -123,6 +123,13 @@ class GastronomyController extends Controller
      */
     public function destroy($id)
     {
-        
+        try{
+            $gastronomy = $this->gastronomiesService->destroy($id);
+            if(empty($gastronomy)) 
+                return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
+            return (new ApiResponse(true, null, 'Gastronomy deleted.', HttpStatus::OK))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
     }
 }

@@ -52,7 +52,7 @@ class ServiceAbstract
      * @param  int  $id
      * @return Model
      */
-    public function findBy($id) : Model
+    public function findBy($id)
     {
         return $this->model->find($id);
     }
@@ -79,7 +79,7 @@ class ServiceAbstract
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Model
      */
     public function destroy($id)
     {
