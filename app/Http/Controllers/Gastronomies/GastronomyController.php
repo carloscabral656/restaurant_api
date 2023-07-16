@@ -41,7 +41,7 @@ class GastronomyController extends Controller
             // Taking from a service.
             $gastronomies = $this->gastronomiesService->index();
 
-            if(empty($gastronomies)) return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
+            if(empty($gastronomies)) return (new ApiResponse(true, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
 
             // Creating response from a DTO.
             $gastronomies = $gastronomies->map(function($g){
@@ -49,9 +49,9 @@ class GastronomyController extends Controller
             });
             
             // Response's application.
-            return (new ApiResponse(true, $gastronomies, '', 200))->createResponse();
+            return (new ApiResponse(true, $gastronomies, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
-            return (new ApiResponse(false, null, $e->getMessage(), 500))->createResponse();
+            return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
@@ -86,7 +86,7 @@ class GastronomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) : JsonResponse
     {
         try{
             $gastronomy = $this->gastronomiesService->findBy($id);
@@ -110,9 +110,22 @@ class GastronomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $gastronomy, $id)
+    public function update(Request $gastronomy, $id) : JsonResponse
     {
-        
+        try{
+            $gastronomy->validate(
+                ['description' => 'required']
+            );
+            $gastronomy = $this->gastronomiesService->update($gastronomy->all(), $id);
+            if(empty($gastronomy)) 
+                return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
+            $gastronomies = (new GastronomiesDTO($gastronomy))->createDTO();
+            return (new ApiResponse(true, $gastronomies, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), 'Validation error.', HttpStatus::BAD_REQUEST))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
     }
 
     /**
@@ -121,7 +134,7 @@ class GastronomyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) : JsonResponse
     {
         try{
             $gastronomy = $this->gastronomiesService->destroy($id);

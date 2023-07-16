@@ -63,9 +63,9 @@ class ServiceAbstract
      *
      * @param  array $data
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return ?Model
      */
-    public function update(array $data, $id)
+    public function update(array $data, $id) : ?Model
     {
         $resource = $this->model->find($id);
         if(empty($resource)){
@@ -81,7 +81,7 @@ class ServiceAbstract
      * @param  int  $id
      * @return Model
      */
-    public function destroy($id)
+    public function destroy($id) : ?Model
     {
         $resource = $this->model->find($id);
         if(empty($resource)) return $resource;
