@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Gastronomies;
 
 use App\DTOs\ApiResponse;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gastronomies\DTOs\GastronomiesDTO;
+use App\Models\Gastronomy;
 use App\Services\Gastronomies\GastronomiesServiceConcrete;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Validation\ValidationException;
 
 class GastronomyController extends Controller
 {
@@ -58,9 +61,23 @@ class GastronomyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $gastronomy)
+    public function store(Request $gastronomy) : JsonResponse
     {
-        
+        try{
+            $gastronomy->validate(
+                ['description' => 'required']
+            );
+            $gastronomy = $this->gastronomiesService->store($gastronomy->all());
+            if(empty($gastronomy)) 
+                return (new ApiResponse(false, null, 'No resource created.', HttpStatus::NOT_FOUND))->createResponse();
+
+            $gastronomies = (new GastronomiesDTO($gastronomy))->createDTO();
+            return (new ApiResponse(true, $gastronomies, '', HttpStatus::CREATED))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), 'Validation error.', HttpStatus::BAD_REQUEST))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
     }
 
     /**
@@ -71,7 +88,18 @@ class GastronomyController extends Controller
      */
     public function show($id)
     {
-        
+        try{
+            $gastronomy = $this->gastronomiesService->findBy($id);
+            if(empty($gastronomy)) 
+                return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
+
+            $gastronomy = (new GastronomiesDTO($gastronomy))->createDTO();
+            return (new ApiResponse(true, $gastronomy, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), 'Validation error.', HttpStatus::BAD_REQUEST))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
     }
 
 

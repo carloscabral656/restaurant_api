@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GastronomiesDTO {
 
-    protected Gastronomy $gastronomy;
+    protected Model $gastronomy;
 
     public function __construct(Gastronomy $gastronomy)
     {

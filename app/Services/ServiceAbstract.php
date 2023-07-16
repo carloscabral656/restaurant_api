@@ -50,9 +50,9 @@ class ServiceAbstract
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Model
      */
-    public function findBy($id)
+    public function findBy($id) : Model
     {
         return $this->model->find($id);
     }
