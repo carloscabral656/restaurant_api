@@ -10,6 +10,7 @@ use App\Models\RestaurantType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\RestaurantsType\RestaurantTypeController;
 use App\Http\Controllers\Roles\RolesController;
 
 /*
@@ -24,7 +25,7 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/roles", RolesController::class);
     Route::resource("/addresses", AddressController::class);
     Route::resource("/gastronomies", GastronomyController::class);
-    Route::resource("/restaurant-type", RestaurantType::class);
+    Route::resource("/restaurants-type", RestaurantTypeController::class);
     Route::resource("/restaurant", RestaurantController::class);
     Route::resource("/menu", MenuController::class);
     Route::resource("/item", ItemController::class);
