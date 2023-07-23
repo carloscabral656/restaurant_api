@@ -79,12 +79,12 @@ class ServiceAbstract
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Model
+     * @return boolean
      */
-    public function destroy($id) : ?Model
+    public function destroy($id) : bool
     {
         $resource = $this->model->find($id);
-        if(empty($resource)) return $resource;
-        return $resource->delete();
+        if(empty($resource)) return false;
+        return (bool)$resource->delete();
     }
 }
