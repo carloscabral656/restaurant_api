@@ -1,13 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Restaurants;
 
+use App\DTOs\ApiResponse;
+use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
+use App\Services\Restaurants\RestaurantsService;
 use Exception;
 use Illuminate\Http\Request;
 
-class RestaurantController extends Controller
+class RestaurantsController extends Controller
 {
+
+    protected RestaurantsService $service;
+
+    public function __construct(RestaurantsService $service){
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,12 +26,12 @@ class RestaurantController extends Controller
     public function index()
     {
         try{
-            $restaurant = Restaurant::all();
-            return response($restaurant , 200)
-                    ->header("Content-Type", "application/json");
-        }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            $restaurants = $this->service->index();
+            if(empty($restaurants)) 
+                return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
+            return (new ApiResponse(true, $restaurants, '', 200))->createResponse();
+        } catch(\Exception $e){
+            return (new ApiResponse(false, null, '', 500))->createResponse();
         }
     }
 
