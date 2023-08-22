@@ -16,7 +16,7 @@ class PurchaseSeeder extends Seeder
     public function run()
     {
         DB::table("purchases")->insert([
-            "id_user" => 1
+            "id_user" =>  DB::table('users')->first()->id
         ]);
     }
 }

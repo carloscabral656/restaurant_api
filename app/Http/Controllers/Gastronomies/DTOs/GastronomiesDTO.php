@@ -13,7 +13,7 @@ class GastronomiesDTO {
         $this->gastronomy  = app(Gastronomy::class);
     }
 
-    public function createDTOfromArray(Gastronomy $gastronomy){
+    public function createDTO(Gastronomy $gastronomy){
         return [
             "id"          => $gastronomy->id,
             "description" => $gastronomy->description

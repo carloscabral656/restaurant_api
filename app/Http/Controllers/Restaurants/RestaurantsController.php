@@ -23,7 +23,7 @@ class RestaurantsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index() : JsonResponse
     {
@@ -33,7 +33,7 @@ class RestaurantsController extends Controller
                 return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
 
             $restaurants = $restaurants->map(function($r){
-                return (new RestaurantsDTO())->createDTOfromArray($r);
+                return (new RestaurantsDTO())->createDTO($r);
             });
             return (new ApiResponse(true, $restaurants, '', 200))->createResponse();
         }catch(\Exception $e){
@@ -50,6 +50,7 @@ class RestaurantsController extends Controller
     public function store(Request $restaurant)
     {
         try{
+            //TODO: Validation
             $restaurant = $this->service->store($restaurant->all());
             return response($restaurant, 201)
                     ->header("Content-Type", "application/json");
