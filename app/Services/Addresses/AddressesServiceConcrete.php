@@ -10,7 +10,6 @@ namespace App\Services\Addresses;
 
 use App\Models\Address;
 use App\Services\ServiceAbstract;
-use Illuminate\Database\Eloquent\Model;
 
 class AddressesServiceConcrete extends ServiceAbstract
 {
