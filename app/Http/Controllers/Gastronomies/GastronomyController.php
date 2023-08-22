@@ -6,12 +6,10 @@ use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gastronomies\DTOs\GastronomiesDTO;
-use App\Models\Gastronomy;
 use App\Services\Gastronomies\GastronomiesServiceConcrete;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\ValidationException;
 
 class GastronomyController extends Controller
@@ -22,7 +20,7 @@ class GastronomyController extends Controller
     protected GastronomiesDTO $gastronomiesDTO;
 
     public function __construct(
-        GastronomiesServiceConcrete $gastronomiesService, 
+        GastronomiesServiceConcrete $gastronomiesService,
         GastronomiesDTO $gastronomiesDTO
     )
     {
@@ -47,7 +45,7 @@ class GastronomyController extends Controller
             $gastronomies = $gastronomies->map(function($g){
                 return (new GastronomiesDTO($g))->createDTO();
             });
-            
+
             // Response's application.
             return (new ApiResponse(true, $gastronomies, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
@@ -68,7 +66,7 @@ class GastronomyController extends Controller
                 ['description' => 'required']
             );
             $gastronomy = $this->gastronomiesService->store($gastronomy->all());
-            if(empty($gastronomy)) 
+            if(empty($gastronomy))
                 return (new ApiResponse(false, null, 'No resource created.', HttpStatus::NOT_FOUND))->createResponse();
 
             $gastronomies = (new GastronomiesDTO($gastronomy))->createDTO();
@@ -90,7 +88,7 @@ class GastronomyController extends Controller
     {
         try{
             $gastronomy = $this->gastronomiesService->findBy($id);
-            if(empty($gastronomy)) 
+            if(empty($gastronomy))
                 return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
 
             $gastronomy = (new GastronomiesDTO($gastronomy))->createDTO();
@@ -117,7 +115,7 @@ class GastronomyController extends Controller
                 ['description' => 'required']
             );
             $gastronomy = $this->gastronomiesService->update($gastronomy->all(), $id);
-            if(empty($gastronomy)) 
+            if(empty($gastronomy))
                 return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
             $gastronomies = (new GastronomiesDTO($gastronomy))->createDTO();
             return (new ApiResponse(true, $gastronomies, '', HttpStatus::OK))->createResponse();
@@ -138,7 +136,7 @@ class GastronomyController extends Controller
     {
         try{
             $gastronomy = $this->gastronomiesService->destroy($id);
-            if(empty($gastronomy)) 
+            if(empty($gastronomy))
                 return (new ApiResponse(false, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
             return (new ApiResponse(true, null, 'Gastronomy deleted.', HttpStatus::OK))->createResponse();
         }catch(Exception $e){

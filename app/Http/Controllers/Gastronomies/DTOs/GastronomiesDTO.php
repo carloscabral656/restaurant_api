@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\Gastronomies\DTOs;
 
 use App\Models\Gastronomy;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class GastronomiesDTO {
 
     protected Gastronomy $gastronomy;
 
-    public function __construct(Gastronomy $gastronomy)
+    public function __construct()
     {
-        $this->gastronomy  = $gastronomy;
+        $this->gastronomy  = app(Gastronomy::class);
     }
-    
-    public function createDTO(){
+
+    public function createDTOfromArray(Gastronomy $gastronomy){
         return [
-            "id"          => $this->gastronomy->id,
-            "description" => $this->gastronomy->description
+            "id"          => $gastronomy->id,
+            "description" => $gastronomy->description
         ];
     }
 
