@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    
+
 
     /**
      * Define the eager loading relationship(s)
@@ -49,12 +49,12 @@ class User extends Authenticatable
     ];
 
     /**
-     * 
-     * 
+     *
+     *
     */
     public function roles(){
         return $this->belongsToMany(
-            Roles::class, 
+            Roles::class,
             'user_role',
             'id_user',
             'id_role'

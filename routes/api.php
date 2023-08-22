@@ -8,7 +8,6 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Users\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Restaurants\RestaurantController;
 use App\Http\Controllers\Restaurants\RestaurantsController;
 use App\Http\Controllers\RestaurantsType\RestaurantTypeController;
 use App\Http\Controllers\Roles\RolesController;

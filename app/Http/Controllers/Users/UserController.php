@@ -75,7 +75,7 @@ class UserController extends Controller
             $user = User::find($id);
             if(empty($user)){
                 return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             return response($user, 200)
                     ->header("Content-Type", "application/json");
@@ -99,7 +99,7 @@ class UserController extends Controller
             $user = User::find($id);
             if(empty($user)){
                 return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }else if(!empty($user) && $request->get('id_roles')){
                 $user->roles()->sync($request->get('id_roles'));
             }
@@ -124,7 +124,7 @@ class UserController extends Controller
             $user = User::find($id);
             if(empty($user)){
                 return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             $user->roles()->detach();
             $user->delete();
@@ -132,7 +132,7 @@ class UserController extends Controller
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json"); 
+                ->header("Content-Type", "application/json");
         }
     }
 }

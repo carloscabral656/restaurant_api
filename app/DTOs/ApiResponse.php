@@ -14,12 +14,14 @@ class ApiResponse
     protected $data;
     protected $message;
     protected $statusCode;
+    protected $metaData;
 
-    public function __construct($success = true, $data = [], $message = '', $code){
+    public function __construct($success = true, $data = [], $message = '', $code, $metaData = null){
         $this->success = $success;
         $this->data    = $data;
         $this->message = $message;
-        $this->statusCode    = $code;
+        $this->statusCode = $code;
+        $this->metaData = $metaData;
     }
 
     public function createResponse(){
@@ -28,6 +30,7 @@ class ApiResponse
                 [
                     'success' => $this->success,
                     'data'    => $this->data,
+                    'metaData' => $this->metaData,
                     'message' => $this->message
                 ]
             )

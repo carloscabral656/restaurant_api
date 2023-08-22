@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use App\Services\Restaurants\RestaurantsService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RestaurantsController extends Controller
@@ -23,14 +24,14 @@ class RestaurantsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() : JsonResponse
     {
         try{
             $restaurants = $this->service->index();
-            if(empty($restaurants)) 
+            if(empty($restaurants))
                 return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
             return (new ApiResponse(true, $restaurants, '', 200))->createResponse();
-        } catch(\Exception $e){
+        }catch(\Exception $e){
             return (new ApiResponse(false, null, '', 500))->createResponse();
         }
     }
@@ -44,7 +45,7 @@ class RestaurantsController extends Controller
     public function store(Request $restaurant)
     {
         try{
-            $restaurant = Restaurant::create($restaurant->all());
+            $restaurant = $this->service->store($restaurant->all());
             return response($restaurant, 201)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
@@ -62,10 +63,10 @@ class RestaurantsController extends Controller
     public function show($id)
     {
         try{
-            $restaurant = Restaurant::find($id);
+            $restaurant = $this->service->findBy($id);
             if(empty($restaurant)){
                 return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             return response($restaurant, 200)
                     ->header("Content-Type", "application/json");
@@ -89,7 +90,7 @@ class RestaurantsController extends Controller
             $restaurant = Restaurant::find($id);
             if(empty($user)){
                 return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             $restaurant = Restaurant::find($id);
             $restaurant->update($restaurant->all());
@@ -113,14 +114,14 @@ class RestaurantsController extends Controller
             $restaurant = Restaurant::find($id);
             if(empty($restaurant)){
                 return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             $restaurant = $restaurant->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json"); 
+                ->header("Content-Type", "application/json");
         }
     }
 }

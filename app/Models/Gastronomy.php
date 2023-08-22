@@ -10,5 +10,10 @@ class Gastronomy extends Model
     use HasFactory;
 
     protected $table = "gastronomies";
+    protected $primaryKey = "id";
     protected $fillable = ["description"];
+
+    public function restaurants(){
+        return $this->belongsTo(Restaurant::class, 'id_gastronomy', 'id');
+    }
 }
