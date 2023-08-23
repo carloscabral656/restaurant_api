@@ -49,7 +49,7 @@ class ServiceAbstract
      * @param  int  $id
      * @return Model
      */
-    public function findBy($id)
+    public function findBy($id) : Model
     {
         return $this->model->find($id);
     }

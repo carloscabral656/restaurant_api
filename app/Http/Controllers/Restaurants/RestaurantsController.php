@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Restaurants;
 use App\DTOs\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Restaurants\DTOs\RestaurantsDTO;
+use App\Models\Menu;
 use App\Models\Restaurant;
 use App\Services\Restaurants\RestaurantsService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class RestaurantsController extends Controller
 {
@@ -31,7 +33,6 @@ class RestaurantsController extends Controller
             $restaurants = $this->service->index();
             if(empty($restaurants))
                 return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
-
             $restaurants = $restaurants->map(function($r){
                 return (new RestaurantsDTO())->createDTO($r);
             });
@@ -45,18 +46,25 @@ class RestaurantsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function store(Request $restaurant)
+    public function store(Request $request) : JsonResponse
     {
         try{
-            //TODO: Validation
-            $restaurant = $this->service->store($restaurant->all());
-            return response($restaurant, 201)
-                    ->header("Content-Type", "application/json");
+            $request->validate([
+                'name'           => 'required',
+                'id_address'     => 'required',  
+                'id_gastronomy'  => 'required',
+                'id_restaurant_type' => 'required',
+                'id_owner'   => 'required',
+                'id_address' => 'required'
+            ]);
+            $restaurant = $this->service->store($request->all());
+            return (new ApiResponse(true, $restaurant, '', 200))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(true, '', '', 400))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $e->getMessage(), '', 400))->createResponse();
         }
     }
 
@@ -70,15 +78,14 @@ class RestaurantsController extends Controller
     {
         try{
             $restaurant = $this->service->findBy($id);
-            if(empty($restaurant)){
-                return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
-            }
-            return response($restaurant, 200)
-                    ->header("Content-Type", "application/json");
+            if(empty($restaurant)) 
+                return (
+                        new ApiResponse(true, (new RestaurantsDTO())->createDTO($restaurant), 
+                        "Restaurant doesn't found.", 404)
+                    )->createResponse();
+            return (new ApiResponse(true, $restaurant, "", 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $e->getMessage(), "", 200))->createResponse();
         }
     }
 
@@ -90,21 +97,28 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $restaurant, $id)
+    public function update(Request $request, $id)
     {
         try{
-            $restaurant = Restaurant::find($id);
-            if(empty($user)){
-                return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
+            // Validation
+            $request->validate([
+                'name'           => 'required',
+                'id_address'     => 'required',  
+                'id_gastronomy'  => 'required',
+                'id_restaurant_type' => 'required',
+                'id_owner'   => 'required',
+                'id_address' => 'required'
+            ]);
+            $restaurant = $this->service->findBy($id);
+            if(empty($restaurant)){
+                return (new ApiResponse(true, "", "", 404))->createResponse();
             }
-            $restaurant = Restaurant::find($id);
-            $restaurant->update($restaurant->all());
-            return response($restaurant, 200)
-                    ->header("Content-Type", "application/json");
+            $restaurant = $this->service->update($request->all(), $id);
+            return (new ApiResponse(true, $restaurant, "", 200))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(true, $e->errors(), '', 400))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $e->getMessage(), '', 400))->createResponse();
         }
     }
 
@@ -112,22 +126,21 @@ class RestaurantsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
         try{
-            $restaurant = Restaurant::find($id);
+            $restaurant = $this->service->findBy($id);
             if(empty($restaurant)){
-                return response("Restaurant doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
+                return (new ApiResponse(true, null, "Restaurant not found.", 404))->createResponse();
             }
-            $restaurant = $restaurant->delete();
-            return response(null, 204)
-                    ->header("Content-Type", "application/json");
+            $menu = $restaurant->menus()->first();
+            Menu::destroy($menu->id);
+            $destroyed = $this->service->destroy($id);
+            return (new ApiResponse(true, $destroyed, "", 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $e->getMessage(), '', 400))->createResponse();
         }
     }
 }

@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->unsignedBigInteger("id_restaurant");
-            $table->foreign("id_restaurant")->references("id")->on("restaurants");
+            $table->foreign("id_restaurant")
+                ->references("id")
+                ->on("restaurants")
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
