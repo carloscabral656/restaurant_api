@@ -135,8 +135,6 @@ class RestaurantsController extends Controller
             if(empty($restaurant)){
                 return (new ApiResponse(true, null, "Restaurant not found.", 404))->createResponse();
             }
-            $menu = $restaurant->menus()->first();
-            Menu::destroy($menu->id);
             $destroyed = $this->service->destroy($id);
             return (new ApiResponse(true, $destroyed, "", 200))->createResponse();
         }catch(Exception $e){
