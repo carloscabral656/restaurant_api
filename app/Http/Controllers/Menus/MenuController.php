@@ -30,13 +30,12 @@ class MenuController extends Controller
     {
         try{
             $menus = $this->service->index();
-            // Filtering in DTO
             $menus = $menus->map(function($m){
                 return (new MenuDTO())->createDTO($m);
             });
             return (new ApiResponse(true, $menus, '', 200))->createResponse();
         }catch(Exception $e){
-            return (new ApiResponse(false, $menus, '', 400))->createResponse();
+            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
         }
     }
 
