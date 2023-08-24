@@ -36,6 +36,5 @@ class ApiResponse
             )
             ->setStatusCode($this->statusCode)
             ->header("Content-Type", "application/json");
-
     }
 }

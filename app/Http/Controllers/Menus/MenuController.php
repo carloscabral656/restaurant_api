@@ -10,6 +10,7 @@ use App\Services\Menus\MenuServiceConcrete;
 use App\Services\ServiceAbstract;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class MenuController extends Controller
 {
@@ -17,7 +18,7 @@ class MenuController extends Controller
     protected ServiceAbstract $service;
 
     public function __construct(MenuServiceConcrete $service)
-    {   
+    {
         $this->service = $service;
     }
 
@@ -45,15 +46,20 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $menu)
+    public function store(Request $request)
     {
         try{
-            $menu = Menu::create($menu->all());
-            return response($menu, 201)
-                    ->header("Content-Type", "application/json");
+            $request->validate([
+                'id_restaurant' => 'required',
+                'name'          => 'required'
+            ]);
+            $menu = $this->service->store($request->all());
+            $menu = (new MenuDTO())->createDTO($menu);
+            return (new ApiResponse(true, $menu, '', 200))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), '', 404))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
         }
     }
 
@@ -66,16 +72,14 @@ class MenuController extends Controller
     public function show($id)
     {
         try{
-            $menu = Menu::find($id);
-            if(empty($menu)){
-                return response("Menu doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+            $menu = $this->service->findBy($id);
+            if(empty($menu)) {
+                return (new ApiResponse(true, 'No Menu found', '', 200))->createResponse();
             }
-            return response($menu, 200)
-                    ->header("Content-Type", "application/json");
+            $menu = (new MenuDTO())->createDTO($menu);
+            return (new ApiResponse(true, $menu, '', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(true, $menu, '', 400))->createResponse();
         }
     }
 
@@ -87,21 +91,22 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $menu, $id)
+    public function update(Request $request, $id)
     {
         try{
-            $menu = Menu::find($id);
+            $request->validate([
+                'id_restaurant' => 'required',
+                'name'          => 'required'
+            ]);
+            $menu = $this->service->findBy($id);
             if(empty($menu)){
-                return response("Menu doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                return (new ApiResponse(true, null, 'No Menu found.', 200))->createResponse();
             }
-            $menu = Menu::find($id);
-            $menu->update($menu->all());
-            return response($menu, 200)
-                    ->header("Content-Type", "application/json");
+            $menu = $this->service->update($request->all(), $id);
+            $menu = (new MenuDTO())->createDTO($menu);
+            return (new ApiResponse(true, $menu, '', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $menu, '', 400))->createResponse();
         }
     }
 
@@ -117,14 +122,14 @@ class MenuController extends Controller
             $menu = Menu::find($id);
             if(empty($menu)){
                 return response("Menu doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
+                    ->header("Content-Type", "application/json");
             }
             $menu = $menu->delete();
             return response(null, 204)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){
             return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json"); 
+                ->header("Content-Type", "application/json");
         }
     }
 }
