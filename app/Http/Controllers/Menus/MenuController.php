@@ -119,17 +119,14 @@ class MenuController extends Controller
     public function destroy($id)
     {
         try{
-            $menu = Menu::find($id);
+            $menu = $this->service->findBy($id);
             if(empty($menu)){
-                return response("Menu doesn't found.", 404)
-                    ->header("Content-Type", "application/json");
+                return (new ApiResponse(true, null, 'No Menu found.', 200))->createResponse();
             }
-            $menu = $menu->delete();
-            return response(null, 204)
-                    ->header("Content-Type", "application/json");
+            $menu = $this->service->destroy($id);
+            return (new ApiResponse(true, $menu, 'Menu destroyed.', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $menu, '', 400))->createResponse();
         }
     }
 }

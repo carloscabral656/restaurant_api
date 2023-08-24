@@ -47,9 +47,9 @@ class ServiceAbstract
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Model
+     * @return ?Model
      */
-    public function findBy($id) : Model
+    public function findBy($id) : ?Model
     {
         return $this->model->find($id);
     }
