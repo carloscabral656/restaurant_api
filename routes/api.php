@@ -3,7 +3,7 @@
 use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\Gastronomies\GastronomyController;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\MenuController;
+use App\Http\Controllers\Menus\MenuController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Users\UserController;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/gastronomies", GastronomyController::class);
     Route::resource("/restaurants-type", RestaurantTypeController::class);
     Route::resource("/restaurants", RestaurantsController::class);
-    Route::resource("/menu", MenuController::class);
+    Route::resource("/menus", MenuController::class);
     Route::resource("/item", ItemController::class);
     Route::resource("/purchase", PurchaseController::class);
     Route::fallback(function(){

@@ -1,13 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Menus;
 
+use App\DTOs\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Menus\DTOs\MenuDTO;
 use App\Models\Menu;
+use App\Services\Menus\MenuServiceConcrete;
+use App\Services\ServiceAbstract;
 use Exception;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
+
+    protected ServiceAbstract $service;
+
+    public function __construct(MenuServiceConcrete $service)
+    {   
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,12 +29,14 @@ class MenuController extends Controller
     public function index()
     {
         try{
-            $menus = Menu::all();
-            return response($menus , 200)
-                    ->header("Content-Type", "application/json");
+            $menus = $this->service->index();
+            // Filtering in DTO
+            $menus = $menus->map(function($m){
+                return (new MenuDTO())->createDTO($m);
+            });
+            return (new ApiResponse(true, $menus, '', 200))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $menus, '', 400))->createResponse();
         }
     }
 
