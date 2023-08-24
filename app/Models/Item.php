@@ -10,5 +10,13 @@ class Item extends Model
     use HasFactory;
 
     protected $table = "items";
-    protected $fillable = ["id", "id_menu"];
+    protected $fillable = [
+        "id", 
+        "id_menu", 
+        "name", 
+        "description", 
+        "img_item",
+        "unit_price",
+        "discount"
+    ];
 }
