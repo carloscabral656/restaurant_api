@@ -15,8 +15,12 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
             $table->unsignedBigInteger("id_menu");
+            $table->string("name");
+            $table->string('description');
+            $table->string('img_item');
+            $table->float('unit_price');
+            $table->float('discount');
             $table->foreign("id_menu")
                 ->references("id")
                 ->on("menus")

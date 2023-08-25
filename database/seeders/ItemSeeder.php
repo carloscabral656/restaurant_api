@@ -16,9 +16,13 @@ class ItemSeeder extends Seeder
     public function run()
     {
         DB::table("items")->insert([
-            "name" => "ITEM 1",
-            "id_menu" => DB::table('menus')->first()->id  
-        ]);
+            "id_menu" => DB::table('menus')->first()->id,
+            "name" => '', 
+            "description" => '', 
+            "img_item" => '',
+            "unit_price" => '',
+            "discount" => ''
+         ]);
 
         DB::table("items")->insert([
             "name" => "ITEM 2",
