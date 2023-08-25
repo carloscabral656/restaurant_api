@@ -56,16 +56,12 @@ class ItemController extends Controller
     public function show($id)
     {
         try{
-            $item = Item::find($id);
-            if(empty($item)){
-                return response("Item doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            return response($item, 200)
-                    ->header("Content-Type", "application/json");
+            $item = $this->service->findBy($id);
+            return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, null, '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
@@ -77,21 +73,23 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $item, $id)
+    public function update(Request $request, $id)
     {
         try{
-            $item = Item::find($id);
-            if(empty($item)){
-                return response("User doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            $item = Item::find($id);
-            $item->update($item->all());
-            return response($item, 200)
-                    ->header("Content-Type", "application/json");
+            $request->validate([
+                'id_menu'      => 'required',
+                'name'         => 'required',  
+                'description'  => 'required',
+                'img_item'     => 'required',
+                'unit_price'   => 'required',
+                'discount'     => 'required'
+            ]);
+            $item = $this->service->update($request->all(), $id);
+            return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, null, '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
@@ -104,17 +102,12 @@ class ItemController extends Controller
     public function destroy($id)
     {
         try{
-            $item = Item::find($id);
-            if(empty($item)){
-                return response("Item doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            $item = $item->delete();
-            return response(null, 204)
-                    ->header("Content-Type", "application/json");
+            $item = $this->service->destroy($id);
+            return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, null, '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json"); 
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 }
