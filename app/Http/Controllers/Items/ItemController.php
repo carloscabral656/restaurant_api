@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Items;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
-use App\Models\Item;
 use App\Services\Items\ItemsServiceConcrete;
 use Exception;
 use Illuminate\Http\JsonResponse;

@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Purchases;
 
+use App\Http\Controllers\Controller;
 use App\Models\Purchase;
 use Exception;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
-     /**
+    
+    protected $service;
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
