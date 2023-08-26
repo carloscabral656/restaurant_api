@@ -44,7 +44,7 @@ class PurchasesController extends Controller
     public function store(Request $purchase)
     {
         try{
-            $uspurchaseer = Purchase::create($purchase->all());
+            $purchase = Purchase::create($purchase->all());
             return response($purchase, 201)
                     ->header("Content-Type", "application/json");
         }catch(Exception $e){

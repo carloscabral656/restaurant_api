@@ -10,7 +10,7 @@ class Purchase extends Model
     use HasFactory;
 
     protected $table = "purchases";
-    protected $fillable = ["id", "id_user", "id_item"];
+    protected $fillable = ["id", "id_user", "total_descount", "total_purchase"];
     protected $with = ['client'];
 
     public function client(){
@@ -18,6 +18,12 @@ class Purchase extends Model
     }
 
     public function items(){
+        return $this->belongsToMany(
+            Item::class, 
+            ItemPurchase::class,
+            'id_purchase',
+            'id_item'
+        );
     }
 
 }
