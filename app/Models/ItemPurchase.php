@@ -9,6 +9,6 @@ class ItemPurchase extends Model
 {
     use HasFactory;
 
-    protected $table = "itens_purchase";
+    protected $table = "items_purchases";
     protected $fillable = ["id_item", "id_purchase"];
 }

@@ -11,7 +11,7 @@ class Purchase extends Model
 
     protected $table = "purchases";
     protected $fillable = ["id", "id_user", "total_descount", "total_purchase"];
-    protected $with = ['client'];
+    protected $with = ['client', 'items'];
 
     public function client(){
         return $this->belongsTo(User::class, 'id_user', 'id');

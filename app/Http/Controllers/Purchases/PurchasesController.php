@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Purchases;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Purchases\DTOs\PurchaseDTO;
 use App\Models\Purchase;
 use App\Services\Purchases\PurchasesServiceConcrete;
 use Exception;
@@ -29,6 +30,9 @@ class PurchasesController extends Controller
     {
         try{
             $purchases = $this->service->index();
+            $purchases = $purchases->map(function($p){
+                return (new PurchaseDTO())->createDTO($p);
+            });
             return (new ApiResponse(true, $purchases, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
