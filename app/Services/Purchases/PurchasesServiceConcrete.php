@@ -5,7 +5,6 @@ namespace App\Services\Purchases;
 use App\Models\Purchase;
 use App\Services\ServiceAbstract;
 use Exception;
-use DB;
 use Illuminate\Support\Facades\DB;
 
 class PurchasesServiceConcrete extends ServiceAbstract {
