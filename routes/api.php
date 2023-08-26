@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\Gastronomies\GastronomyController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\Items\ItemController;
 use App\Http\Controllers\Menus\MenuController;
-use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Purchases\PurchasesController;
 use App\Http\Controllers\Users\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,8 +27,8 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/restaurants-type", RestaurantTypeController::class);
     Route::resource("/restaurants", RestaurantsController::class);
     Route::resource("/menus", MenuController::class);
-    Route::resource("/item", ItemController::class);
-    Route::resource("/purchase", PurchaseController::class);
+    Route::resource("/itens", ItemController::class);
+    Route::resource("/purchases", PurchasesController::class);
     Route::fallback(function(){
         echo "This route doesn't exists.";
     });

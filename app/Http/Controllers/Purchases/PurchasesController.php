@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers\Purchases;
 
+use App\DTOs\ApiResponse;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Purchase;
+use App\Services\Purchases\PurchasesServiceConcrete;
 use Exception;
 use Illuminate\Http\Request;
 
-class PurchaseController extends Controller
+class PurchasesController extends Controller
 {
     
-    protected $service;
+    protected PurchasesServiceConcrete $service;
     
+    public function __construct(PurchasesServiceConcrete $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +28,10 @@ class PurchaseController extends Controller
     public function index()
     {
         try{
-            $purchase = Purchase::all();
-            return response($purchase , 200)
-                    ->header("Content-Type", "application/json");
+            $purchases = $this->service->index();
+            return (new ApiResponse(true, $purchases, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 

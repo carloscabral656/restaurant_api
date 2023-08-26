@@ -20,18 +20,26 @@ class ItemSeeder extends Seeder
             "name" => '', 
             "description" => '', 
             "img_item" => '',
-            "unit_price" => '',
-            "discount" => ''
+            "unit_price" => 1,
+            "discount" => 0
          ]);
 
         DB::table("items")->insert([
-            "name" => "ITEM 2",
-            "id_menu" => DB::table('menus')->first()->id  
+            "id_menu" => DB::table('menus')->first()->id,
+            "name" => '', 
+            "description" => '', 
+            "img_item" => '',
+            "unit_price" => 1,
+            "discount" => 0 
         ]);
 
         DB::table("items")->insert([
-            "name" => "ITEM 3",
-            "id_menu" => DB::table('menus')->first()->id  
+            "id_menu" => DB::table('menus')->first()->id,
+            "name" => '', 
+            "description" => '', 
+            "img_item" => '',
+            "unit_price" => 1,
+            "discount" => 0 
         ]);
     }
 }
