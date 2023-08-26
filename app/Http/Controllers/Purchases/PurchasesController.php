@@ -10,6 +10,7 @@ use App\Models\Purchase;
 use App\Services\Purchases\PurchasesServiceConcrete;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PurchasesController extends Controller
 {
@@ -45,15 +46,21 @@ class PurchasesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $purchase)
+    public function store(Request $request)
     {
         try{
-            $purchase = Purchase::create($purchase->all());
-            return response($purchase, 201)
-                    ->header("Content-Type", "application/json");
+            $request->validate(
+                [
+                    "id_user" => "required", 
+                    "items"   => "required"
+                ]
+            );
+            $purchase = $this->service->store($request->all());
+            return $purchase;
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
         }
     }
 

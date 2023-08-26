@@ -4,7 +4,9 @@ namespace App\Services\Purchases;
 
 use App\Models\Purchase;
 use App\Services\ServiceAbstract;
-use Illuminate\Http\Request;
+use Exception;
+use DB;
+use Illuminate\Support\Facades\DB;
 
 class PurchasesServiceConcrete extends ServiceAbstract {
 
@@ -21,7 +23,15 @@ class PurchasesServiceConcrete extends ServiceAbstract {
      * @return
      */
     public function store(array $purchase){
-        return $purchase;
+        try{
+            // TODO: Create logic for descount.
+
+            // TODO: Create logic for total price for a purchase.
+            DB::beginTransaction();
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
     }
 
     /**
@@ -36,7 +46,7 @@ class PurchasesServiceConcrete extends ServiceAbstract {
      * Calculate the sum of the price all items
      * 
     */
-    public function calculateTotalPurnchase(){
+    public function calculateTotalPurchase(){
     }
 
 }
