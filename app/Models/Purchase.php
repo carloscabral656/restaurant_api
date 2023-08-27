@@ -10,7 +10,13 @@ class Purchase extends Model
     use HasFactory;
 
     protected $table = "purchases";
-    protected $fillable = ["id", "id_user", "total_descount", "total_purchase"];
+    protected $fillable = [
+        "id_user", 
+        "total_descount_items", // The sum of all descount in items.
+        "descount_purchase",    // Discount in Purchase
+        "total_gross_purchase", // The sum of all full value in items.
+        "total_net_purchase"    // total_gross_purchase - total_descount_items - descount_purchase
+        ]; 
     protected $with = ['client', 'items'];
 
     public function client(){
