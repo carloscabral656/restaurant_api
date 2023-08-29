@@ -73,16 +73,11 @@ class PurchasesController extends Controller
     public function show($id)
     {
         try{
-            $purchase = Purchase::find($id);
-            if(empty($purchase)){
-                return response("Purchase doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            return response($purchase, 200)
-                    ->header("Content-Type", "application/json");
+            $purchase = $this->service->findBy($id);
+            $purchase = (new PurchaseDTO())->createDTO($purchase);
+            return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
