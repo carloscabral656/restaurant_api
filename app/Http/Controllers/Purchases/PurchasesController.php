@@ -74,7 +74,9 @@ class PurchasesController extends Controller
     {
         try{
             $purchase = $this->service->findBy($id);
-            $purchase = (new PurchaseDTO())->createDTO($purchase);
+            if(empty($purchase)){
+                return (new ApiResponse(true, null, 'No purchase found.', HttpStatus::OK))->createResponse();
+            }
             return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
@@ -116,17 +118,11 @@ class PurchasesController extends Controller
     public function destroy($id)
     {
         try{
-            $purchase = Purchase::find($id);
-            if(empty($purchase)){
-                return response("Purchase doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            $purchase = $purchase->delete();
-            return response(null, 204)
-                    ->header("Content-Type", "application/json");
+            $deleted  = $this->service->destroy($id);
+            if(!$deleted) return (new ApiResponse(false, null, 'Purchase not deleted.', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+            return (new ApiResponse(true, null, 'Purchase deleted.', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                ->header("Content-Type", "application/json"); 
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 }

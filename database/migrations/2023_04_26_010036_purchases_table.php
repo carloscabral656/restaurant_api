@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger("id_user");
             $table->foreign("id_user")->references("id")->on("users");
 
