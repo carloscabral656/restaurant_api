@@ -91,21 +91,22 @@ class PurchasesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $purchase, $id)
+    public function update(Request $request, $id)
     {
         try{
-            $purchase = Purchase::find($id);
-            if(empty($purchase)){
-                return response("Purchase doesn't found.", 404)
-                    ->header("Content-Type", "application/json"); 
-            }
-            $purchase->update($purchase->all());
-            $purchase = Purchase::find($id);
-            return response($purchase, 200)
-                    ->header("Content-Type", "application/json");
+            $request->validate(
+                [
+                    "id_user" => "required", 
+                    "items"   => "required"
+                ]
+            );
+            $purchase = $this->service->update($request->all(), $id);
+            if(empty($purchase)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
+            return $purchase;
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return response($e->getMessage(), 400)
-                    ->header("Content-Type", "application/json");
+            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
         }
     }
 

@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Purchase;
 use App\Services\ServiceAbstract;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class PurchasesServiceConcrete extends ServiceAbstract {
@@ -41,8 +42,40 @@ class PurchasesServiceConcrete extends ServiceAbstract {
             DB::commit();
             return $purchase;
         }catch(Exception $e){
-            return $e->getMessage();
             DB::rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  array $data
+     * @param  int  $id
+     * @return 
+     */
+    public function update(array $data, $id)
+    {
+        try{
+            $purchase = $this->model->find($id);
+            if(empty($purchase)) return null;
+            $totalDescountItems = $this->calculateTotalDescountItems($data);
+            $totalPurchase = $this->calculateTotalPurchase($data);
+            DB::beginTransaction();
+            $purchaseData = [
+                "id_user"              => $purchase["id_user"], 
+                "total_descount_items" => $totalDescountItems, 
+                "descount_purchase"    => 0,    
+                "total_gross_purchase" => $totalPurchase, 
+                "total_net_purchase"   => ($totalPurchase - $totalDescountItems)
+            ];
+            $purchase = $purchase->update($purchaseData);
+            $purchase = $this->model->find($id);
+            DB::commit();
+            return $purchase;
+        }catch(Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
         }
     }
 
