@@ -20,6 +20,10 @@ class PurchaseDTO {
         return [
             "id"     => $p->id, 
             "client" => $this->userDTO->createDTO($p->client),
+            "totalGrossPurchase" => $p->total_gross_purchase, 
+            "descountPurchase"   => $p->descount_purchase,
+            "totalDescountItems" => $p->total_descount_items,
+            "totalNetPurchase"   => $p->total_net_purchase,
             "items"  => $p->items->map(function($i){
                 return $this->itemDTO->createDTO($i);
             })

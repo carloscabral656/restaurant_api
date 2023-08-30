@@ -56,11 +56,12 @@ class PurchasesController extends Controller
                 ]
             );
             $purchase = $this->service->store($request->all());
-            return $purchase;
+            $purchase = (new PurchaseDTO())->createDTO($purchase);
+            return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
         }catch(ValidationException $e){
             return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
@@ -74,9 +75,9 @@ class PurchasesController extends Controller
     {
         try{
             $purchase = $this->service->findBy($id);
-            if(empty($purchase)){
+            if(empty($purchase))
                 return (new ApiResponse(true, null, 'No purchase found.', HttpStatus::OK))->createResponse();
-            }
+            $purchase = (new PurchaseDTO)->createDTO($purchase);
             return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
@@ -102,11 +103,12 @@ class PurchasesController extends Controller
             );
             $purchase = $this->service->update($request->all(), $id);
             if(empty($purchase)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
-            return $purchase;
+            $purchase = (new PurchaseDTO)->createDTO($purchase);
+            return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
         }catch(ValidationException $e){
             return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
-            return (new ApiResponse(false, $e->getMessage(), '', 400))->createResponse();
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
     }
 
