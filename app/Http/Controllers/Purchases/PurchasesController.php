@@ -6,7 +6,6 @@ use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Purchases\DTOs\PurchaseDTO;
-use App\Models\Purchase;
 use App\Services\Purchases\PurchasesServiceConcrete;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,6 +15,7 @@ class PurchasesController extends Controller
 {
     
     protected PurchasesServiceConcrete $service;
+
     
     public function __construct(PurchasesServiceConcrete $service)
     {
@@ -56,8 +56,10 @@ class PurchasesController extends Controller
                 ]
             );
             $purchase = $this->service->store($request->all());
-            $purchase = (new PurchaseDTO())->createDTO($purchase);
-            return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
+            $purchase->items()->attach($request->all()["items"]);
+            $newPurchase = $this->service->findBy($purchase->id);
+            $newPurchase = (new PurchaseDTO())->createDTO($newPurchase);
+            return (new ApiResponse(true, $newPurchase, '', HttpStatus::OK))->createResponse();
         }catch(ValidationException $e){
             return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
@@ -103,8 +105,10 @@ class PurchasesController extends Controller
             );
             $purchase = $this->service->update($request->all(), $id);
             if(empty($purchase)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
-            $purchase = (new PurchaseDTO)->createDTO($purchase);
-            return (new ApiResponse(true, $purchase, '', HttpStatus::OK))->createResponse();
+            $purchase->items()->sync($request->all()["items"]);
+            $newPurchase = $this->service->findBy($purchase->id);
+            $newPurchase = (new PurchaseDTO)->createDTO($newPurchase);
+            return (new ApiResponse(true, $newPurchase, '', HttpStatus::OK))->createResponse();
         }catch(ValidationException $e){
             return (new ApiResponse(false, $e->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(Exception $e){
