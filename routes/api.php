@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Addresses\AddressController;
+use App\Http\Controllers\Cupons\CuponsController;
 use App\Http\Controllers\Gastronomies\GastronomyController;
 use App\Http\Controllers\Items\ItemController;
 use App\Http\Controllers\Menus\MenuController;
@@ -29,6 +30,7 @@ Route::prefix("/v1")->group(function(){
     Route::resource("/menus", MenuController::class);
     Route::resource("/itens", ItemController::class);
     Route::resource("/purchases", PurchasesController::class);
+    Route::resource("/cupons", CuponsController::class);
     Route::fallback(function(){
         echo "This route doesn't exists.";
     });
