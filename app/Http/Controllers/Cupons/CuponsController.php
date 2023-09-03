@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cupons;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Cupons\DTOs\CuponsDTO;
 use App\Services\Cupoms\CupomsServiceConcrete;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class CuponsController extends Controller
 {
 
-    // Controller service
+    // Controller's service
     protected CupomsServiceConcrete $service;
 
     public function __construct(CupomsServiceConcrete $cupomsServiceConcrete){
@@ -28,10 +29,13 @@ class CuponsController extends Controller
     public function index()
     {
         try{
-            $cupom = $this->service->index();
-            if(empty($cupom))
-                return (new ApiResponse(true, null, 'No resource found.', HttpStatus::NOT_FOUND))->createResponse();
-            return (new ApiResponse(true, $cupom, '', HttpStatus::OK))->createResponse();
+            $cupons = $this->service->index();
+            if(empty($cupons))
+                return (new ApiResponse(true, null, '', HttpStatus::NOT_FOUND))->createResponse();
+            $cupons = $cupons->map(function($cupom){
+                return (new CuponsDTO())->createDTO($cupom);
+            });
+            return (new ApiResponse(true, $cupons, '', HttpStatus::OK))->createResponse();
         } catch(\Exception $e){
             return (new ApiResponse(false, null, '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
@@ -56,7 +60,8 @@ class CuponsController extends Controller
             ]);
             // Creating a resource in DataBase
             $cupom = $this->service->store($request->all());
-            return (new ApiResponse(true, $cupom, '', HttpStatus::CREATED))->createResponse();
+            $cupomDTO = (new CuponsDTO())->createDTO($cupom);
+            return (new ApiResponse(true, $cupomDTO, '', HttpStatus::CREATED))->createResponse();
         }catch(ValidationException $v){
             return (new ApiResponse(false, $v->errors(), '', HttpStatus::BAD_REQUEST))->createResponse();
         }catch(\Exception $e){
@@ -75,7 +80,8 @@ class CuponsController extends Controller
         try{
             $cupom = $this->service->findBy($id);
             if(empty($cupom)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
-            return (new ApiResponse(true, $cupom, '', HttpStatus::OK))->createResponse();
+            $cupomDTO = (new CuponsDTO())->createDTO($cupom);
+            return (new ApiResponse(true, $cupomDTO, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
@@ -100,8 +106,9 @@ class CuponsController extends Controller
                 'percentage_descount' => 'required'
             ]);
             $cupom = $this->service->update($request->all(), $id);
-            if(empty($updated)) return (new ApiResponse(true, null, '', HttpStatus::NOT_FOUND))->createResponse();
-            return (new ApiResponse(true, $updated, '', HttpStatus::OK))->createResponse();
+            if(empty($cupom)) return (new ApiResponse(true, null, '', HttpStatus::NOT_FOUND))->createResponse();
+            $cupomDTO = (new CuponsDTO())->createDTO($cupom);
+            return (new ApiResponse(true, $cupomDTO, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
         }
@@ -116,8 +123,8 @@ class CuponsController extends Controller
     public function destroy($id)
     {
         try{
-            $address = $this->service->destroy($id);
-            if(empty($address)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
+            $cupom = $this->service->destroy($id);
+            if(empty($cupom)) return (new ApiResponse(false, null, '', HttpStatus::NOT_FOUND))->createResponse();
             return (new ApiResponse(true, null, '', HttpStatus::OK))->createResponse();
         }catch(Exception $e){
             return (new ApiResponse(false, null, $e->getMessage(), HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
