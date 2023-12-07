@@ -21,6 +21,21 @@ class ItemController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() : JsonResponse
+    {
+        try{
+            $item = $this->service->index();
+            return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

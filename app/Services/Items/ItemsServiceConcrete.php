@@ -7,11 +7,8 @@ use App\Services\ServiceAbstract;
 
 class ItemsServiceConcrete extends ServiceAbstract
 {
-    protected Item $model;
-
     public function __construct(Item $model)
     {
        $this->model = $model; 
     }
-
 }

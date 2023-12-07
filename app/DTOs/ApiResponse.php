@@ -30,7 +30,7 @@ class ApiResponse
                 [
                     'success' => $this->success,
                     'data'    => $this->data,
-                    'metaData' => $this->metaData,
+                    'meta_data' => $this->metaData,
                     'message' => $this->message
                 ]
             )

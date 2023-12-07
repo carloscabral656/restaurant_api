@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Restaurants;
 
 use App\DTOs\ApiResponse;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Restaurants\DTOs\RestaurantsDTO;
-use App\Models\Menu;
-use App\Models\Restaurant;
 use App\Services\Restaurants\RestaurantsService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -27,18 +26,40 @@ class RestaurantsController extends Controller
      *
      * @return JsonResponse
      */
-    public function index() : JsonResponse
+    public function index(Request $request) : JsonResponse
     {
         try{
+            
             $restaurants = $this->service->index();
             if(empty($restaurants))
-                return (new ApiResponse(true, null, 'No resource found.', 404))->createResponse();
+                return (
+                    new ApiResponse (
+                        success: true, 
+                        data   : null, 
+                        message: "No resource found.", 
+                        code   : HttpStatus::OK
+                    )
+                )->createResponse();
             $restaurants = $restaurants->map(function($r){
                 return (new RestaurantsDTO())->createDTO($r);
             });
-            return (new ApiResponse(true, $restaurants, '', 200))->createResponse();
+            return (
+                    new ApiResponse(
+                        success: true, 
+                        data   : $restaurants, 
+                        message: '', 
+                        code   : HttpStatus::OK
+                    )
+                )->createResponse();
         }catch(\Exception $e){
-            return (new ApiResponse(false, null, '', 500))->createResponse();
+            return (
+                    new ApiResponse (
+                        success   : false, 
+                        data      : null, 
+                        message   : '', 
+                        code      : HttpStatus::BAD_REQUEST
+                    )
+                )->createResponse();
         }
     }
 
