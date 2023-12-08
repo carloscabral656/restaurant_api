@@ -18,7 +18,6 @@ class RestaurantTypeFactory extends Factory
     public function definition()
     {
         return [
-
             [
                 'name' => 'Tradicional',
                 'created_at' => Carbon::now(),

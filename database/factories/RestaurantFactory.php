@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Gastronomy;
+use App\Models\RestaurantType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,12 @@ class RestaurantFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'id_gastronomy' => 1,
-            'id_restaurant_type' => 1,
+            'id_gastronomy' => function() {
+                return Gastronomy::where('description', 'like', '%Italian%');
+            },
+            'id_restaurant_type' => function() {
+                return RestaurantType::where('description', 'like', '%Pastas%');
+            },
             'id_owner' => 1,
             'id_address' => 1
         ];
