@@ -3,7 +3,6 @@
 namespace App\Services\Restaurants;
 
 use App\Models\Restaurant;
-use App\Models\RestaurantType;
 use App\Services\ServiceAbstract;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,7 +19,7 @@ class RestaurantsService extends ServiceAbstract
     */
     public function __construct(Restaurant $restaurantModel)
     {
-        $this->model = $restaurantModel;
+        $this->restaurant = $restaurantModel;
     }
 
     /**
