@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\RestaurantType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RestaurantTypeSeeder extends Seeder
 {
@@ -15,8 +14,6 @@ class RestaurantTypeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('restaurant_type')->insert([
-            "description" => 'FAST FOOD'
-        ]);
+        RestaurantType::factory(2)->create();
     }
 }

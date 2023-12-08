@@ -21,11 +21,13 @@ class RestaurantFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'id_gastronomy' => function() {
-                return Gastronomy::where('description', 'like', '%Italian%');
+                dd(Gastronomy::where('description', 'like', '%Italian%')->first());
+                return Gastronomy::where('description', 'like', '%Italian%')->first()->id ?? 1;
             },
             'id_restaurant_type' => function() {
-                return RestaurantType::where('description', 'like', '%Pastas%');
+                return RestaurantType::where('description', 'like', '%Pasta%')->first()->id ?? 1;
             },
+            'image_restaurant' => null,
             'id_owner' => 1,
             'id_address' => 1
         ];

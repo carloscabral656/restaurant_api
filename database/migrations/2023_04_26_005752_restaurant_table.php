@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('image_restaurant');
+            $table->string('image_restaurant')->nullable();
 
             $table->unsignedBigInteger('id_gastronomy');
             $table->foreign('id_gastronomy')->references('id')->on('gastronomies');

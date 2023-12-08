@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Gastronomy;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class GastronomySeeder extends Seeder
 {
@@ -16,12 +14,6 @@ class GastronomySeeder extends Seeder
      */
     public function run()
     {
-        DB::table("gastronomies")->insert([
-            'description' => "ITALIAN"
-        ]);
-
-        DB::table("gastronomies")->insert([
-            'description' => "FRENCH"
-        ]);
+        Gastronomy::factory(2)->create();
     }
 }
