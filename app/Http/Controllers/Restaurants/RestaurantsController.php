@@ -7,17 +7,18 @@ use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Restaurants\DTOs\RestaurantsDTO;
 use App\Services\Restaurants\RestaurantsService;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Exception;
 
 class RestaurantsController extends Controller
 {
 
     protected RestaurantsService $service;
 
-    public function __construct(RestaurantsService $service){
+    public function __construct(RestaurantsService $service)
+    {
         $this->service = $service;
     }
 
@@ -29,8 +30,8 @@ class RestaurantsController extends Controller
     public function index(Request $request) : JsonResponse
     {
         try{
-            
-            $restaurants = $this->service->index();
+            $filters = $request->get('filters');
+            $restaurants = $this->service->index($filters);
             if(empty($restaurants))
                 return (
                     new ApiResponse (
@@ -43,14 +44,12 @@ class RestaurantsController extends Controller
             $restaurants = $restaurants->map(function($r){
                 return (new RestaurantsDTO())->createDTO($r);
             });
-            return (
-                    new ApiResponse(
+            return (new ApiResponse(
                         success: true, 
                         data   : $restaurants, 
-                        message: '', 
+                        message: 'Restaurants found successfully.', 
                         code   : HttpStatus::OK
-                    )
-                )->createResponse();
+                    ))->createResponse();
         }catch(\Exception $e){
             return (
                     new ApiResponse (

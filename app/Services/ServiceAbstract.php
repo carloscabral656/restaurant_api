@@ -25,8 +25,8 @@ class ServiceAbstract
      * Display a listing of the resource.
      *
      * @return Collection
-     */
-    public function index() : Collection
+    */
+    public function index(array $filters = null) : Collection | null
     {
         return $this->model->all();
     }
