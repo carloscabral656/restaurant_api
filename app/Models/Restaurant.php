@@ -12,7 +12,7 @@ class Restaurant extends Model
 
     protected $table = "restaurants";
     protected $primaryKey = 'id';
-    protected $fillable = ["name", "description", "id_gastronomy", "id_restaurant_type", "id_owner", "id_address"];
+    protected $fillable = ["name", "description", "image_restaurant", "id_gastronomy", "id_restaurant_type", "id_owner", "id_address"];
     protected $with = ['gastronomy', 'restaurantType'];
 
     public function gastronomy(){
