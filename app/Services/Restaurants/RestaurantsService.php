@@ -26,16 +26,17 @@ class RestaurantsService extends ServiceAbstract
      * Display a listing of the resource.
      *  
      * @param array $filters
-     * @return Collection
+     * @return ?Collection
     */
-    public function index(array $filters = null) : Collection | null
+    public function index(array $filters = null) : ?Collection
     {
         try{
+            
             $restaurants = $this
-                            ->restaurant
-                            ->join('gastronomies', 'restaurants.id', '=', 'gastronomies.id', 'left')
-                            ->join('restaurant_type', 'restaurants.id', '=', 'restaurant_type.id', 'left');  
-
+                        ->restaurant
+                        ->join('gastronomies', 'restaurants.id_gastronomy', '=', 'gastronomies.id', 'left')
+                        ->join('restaurant_type', 'restaurants.id_restaurant_type', '=', 'restaurant_type.id', 'left');  
+        
             if(isset($filters)){
                 if(array_key_exists('name', $filters)){
                     $restaurants->where('restaurant.name', 'like', "%$filters[name]%");
@@ -49,8 +50,7 @@ class RestaurantsService extends ServiceAbstract
                     $restaurants->where('restaurant_type.id', '=', (int)$filters['restaurant_type']);
                 }
             }
-
-            return $restaurants->get();
+            return $restaurants->toSql();
         }catch(Exception $e){
             throw $e;
         }

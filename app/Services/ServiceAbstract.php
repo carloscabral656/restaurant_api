@@ -26,7 +26,7 @@ class ServiceAbstract
      *
      * @return Collection
     */
-    public function index(array $filters = null) : Collection | null
+    public function index(array $filters = null) : ?Collection
     {
         return $this->model->all();
     }
