@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 class ApiResponse
 {
     protected bool $success;
-    protected $data;
+    protected array $data;
     protected ?string $message;
     protected int $statusCode;
     protected ?string $metaData;

@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request)
+    {
+        // TODO: VALIDAR REQUEST.
         $credentials = $request->only('email', 'password');
         if(!auth()->attempt($credentials)) 
         {
@@ -19,10 +21,25 @@ class LoginController extends Controller
                 (
                     success: false,
                     data   : null,
-                    message: null,
-                    code   : HttpStatus::FORBIDDEN
+                    message: trans('Responses/Auth.InvalidCredentials'),
+                    code   : HttpStatus::UNAUTHORIZED
                 )
             )->createResponse();
         }
+
+        $token = auth()->user()->createAccessToken();
+
+        $data = [
+            'token' => $token->plainTextToken
+        ];
+        return (
+                new ApiResponse
+                (
+                    success: true,
+                    data   : $data,
+                    message: '',
+                    code   : HttpStatus::OK
+                )
+        )->createResponse();
     }
 }
