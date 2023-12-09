@@ -54,7 +54,7 @@ class RestaurantsController extends Controller
 
             return (new ApiResponse(
                         success: true, 
-                        data   : $restaurants, 
+                        data   : $restaurants->toArray(), 
                         message: trans('Responses/Restaurants.Found'), 
                         code   : HttpStatus::OK
                     ))->createResponse();
@@ -138,28 +138,37 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id) 
     {
-        try{
+        try
+        {
             $restaurant = $this->service->findBy($id);
-            if(!empty($restaurant)) 
-                return (
-                        new ApiResponse(
-                            success: true, 
-                            data   : (new RestaurantsDTO())->createDTO($restaurant), 
-                            message: "Restaurant found successfully.", 
-                            code   : HttpStatus::OK
-                        )
-                    )->createResponse();
-            return (
-                    new ApiResponse(
-                            success: true,    
-                            data   : $restaurant, 
-                            message: "", 
-                            code   : HttpStatus::OK
-                        )
-                    )->createResponse();
-        }catch(Exception $e){
+            if(empty($restaurant))
+            {
+                return 
+                (
+                    new ApiResponse
+                    (
+                        success: false, 
+                        data   : null, 
+                        message: trans('Responses/Restaurants.NotFound'), 
+                        code   : HttpStatus::OK
+                    )
+                )->createResponse(); 
+            } 
+            return 
+            (
+                new ApiResponse
+                (
+                    success: true,    
+                    data   : $restaurant, 
+                    message: trans('Responses/Restaurants.Found'), 
+                    code   : HttpStatus::OK
+                )
+            )->createResponse();
+
+        }catch(Exception $e)
+        {
             return (
                     new ApiResponse(
                             success: false, 

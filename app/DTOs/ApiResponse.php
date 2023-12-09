@@ -9,6 +9,7 @@
 namespace App\DTOs;
 
 use Illuminate\Http\JsonResponse;
+use Iterator;
 
 class ApiResponse
 {
@@ -32,9 +33,8 @@ class ApiResponse
                 [
                     'success' => $this->success,
                     'data'    => $this->data,
+                    'message' => $this->message,
                     'code'    => $this->statusCode,
-                    'meta_data' => $this->metaData,
-                    'message' => $this->message
                 ]
             )
             ->setStatusCode($this->statusCode)

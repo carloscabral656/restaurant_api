@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\Auth\Api\LoginController;
-use App\Http\Controllers\Auth\Api\RegisterController;
 use App\Http\Controllers\Cupons\CuponsController;
 use App\Http\Controllers\Gastronomies\GastronomyController;
 use App\Http\Controllers\Items\ItemController;
@@ -14,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Restaurants\RestaurantsController;
 use App\Http\Controllers\RestaurantsType\RestaurantTypeController;
 use App\Http\Controllers\Roles\RolesController;
+use App\Models\Restaurant;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +23,29 @@ use App\Http\Controllers\Roles\RolesController;
 */
 
 Route::prefix("/v1")->group(function(){
+    
+    // User's CRUD
     Route::resource("/users", UserController::class);
+
     Route::resource("/roles", RolesController::class);
     Route::resource("/addresses", AddressController::class);
     Route::resource("/gastronomies", GastronomyController::class);
     Route::resource("/restaurants-type", RestaurantTypeController::class);
-    Route::resource("/restaurants", RestaurantsController::class);
+    
+    // Restaurant's CRUD =======================================================
+    Route::resource('/restaurants', RestaurantsController::class)
+        ->only('index', 'show');
+
+    Route::middleware('auth:sanctum')
+        ->prefix('/restaurants')
+        ->group(function(){
+            Route::post('/', [RestaurantsController::class, 'create']);
+            Route::put('/', [RestaurantsController::class, 'update']);
+            Route::delete('/', [RestaurantsController::class, 'destroy']);
+        });
+    // =========================================================================
+
+
     Route::resource("/menus", MenuController::class);
     Route::resource("/itens", ItemController::class);
     Route::resource("/purchases", PurchasesController::class);

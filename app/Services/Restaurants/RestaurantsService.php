@@ -17,9 +17,10 @@ class RestaurantsService extends ServiceAbstract
      *
      * @return Collection
     */
-    public function __construct(Restaurant $restaurantModel)
+    public function __construct(Restaurant $restaurant)
     {
-        $this->restaurant = $restaurantModel;
+        parent::__construct($restaurant);
+        $this->restaurant = $restaurant;
     }
 
     /**

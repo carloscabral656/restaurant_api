@@ -48,7 +48,7 @@ class UserController extends Controller
             // Crypt the password
             $userData = $request->all();
             $userData['password'] = bcrypt($userData['password']);
-            $user = User::create($request->all());
+            $user = User::create($userData);
 
             if(!empty($user) && $request->get('id_roles')){
                 $user->roles()->attach($request->get('id_roles'));

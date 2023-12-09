@@ -7,7 +7,6 @@ use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -39,14 +38,15 @@ class LoginController extends Controller
         $data = [
             'token' => $token->plainTextToken
         ];
-        return (
-                new ApiResponse
-                (
-                    success: true,
-                    data   : $data,
-                    message: '',
-                    code   : HttpStatus::OK
-                )
+        return 
+        (
+            new ApiResponse
+            (
+                success: true,
+                data   : $data,
+                message: '',
+                code   : HttpStatus::OK
+            )
         )->createResponse();
     }
 }
