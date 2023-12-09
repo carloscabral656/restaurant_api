@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Gastronomy;
+use App\Models\Restaurant;
 use App\Models\RestaurantType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,6 +12,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class RestaurantFactory extends Factory
 {
+
+    /**
+     * 
+     * 
+    */
+    protected $model = Restaurant::class;
+
     /**
      * Define the model's default state.
      *
@@ -19,9 +27,8 @@ class RestaurantFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => "{$this->faker->name()} Restaurant",
             'id_gastronomy' => function() {
-                dd(Gastronomy::where('description', 'like', '%Italian%')->first());
                 return Gastronomy::where('description', 'like', '%Italian%')->first()->id ?? 1;
             },
             'id_restaurant_type' => function() {

@@ -14,6 +14,6 @@ class GastronomySeeder extends Seeder
      */
     public function run()
     {
-        Gastronomy::factory(2)->create();
+        Gastronomy::factory(13)->create();
     }
 }
