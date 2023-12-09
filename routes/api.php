@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Addresses\AddressController;
+use App\Http\Controllers\Auth\Api\LoginController;
+use App\Http\Controllers\Auth\Api\RegisterController;
 use App\Http\Controllers\Cupons\CuponsController;
 use App\Http\Controllers\Gastronomies\GastronomyController;
 use App\Http\Controllers\Items\ItemController;
@@ -36,7 +38,12 @@ Route::prefix("/v1")->group(function(){
     });
 });
 
-
+// Authentication Route
+Route::prefix('auth')->group(function() {
+    Route::post('login', LoginController::class, 'login');
+    Route::post('logout', LoginController::class, 'logout');
+    Route::post('register', RegisterController::class, 'register');
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
