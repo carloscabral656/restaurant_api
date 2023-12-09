@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth\Api;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -26,8 +28,13 @@ class LoginController extends Controller
                 )
             )->createResponse();
         }
+        
+        $user = auth()->user();
 
-        $token = auth()->user()->createAccessToken();
+        if($user instanceof User)
+        {
+            $token = $user->createToken('auth_token');
+        }
 
         $data = [
             'token' => $token->plainTextToken

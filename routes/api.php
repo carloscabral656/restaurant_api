@@ -40,8 +40,8 @@ Route::prefix("/v1")->group(function(){
 
 // Authentication Route
 Route::prefix('auth')->group(function() {
-    Route::post('login', LoginController::class, 'login');
-    Route::post('logout', LoginController::class, 'logout');
+    Route::post('login', [LoginController::class, 'login']);
+    Route::post('logout', [LoginController::class, 'logout']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
