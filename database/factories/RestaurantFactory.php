@@ -26,14 +26,14 @@ class RestaurantFactory extends Factory
      */
     public function definition()
     {
+
+        $randomGastronomy = rand(1, Gastronomy::count());
+        $randomRestaurantType = rand(1, RestaurantType::count());
+
         return [
-            'name' => "{$this->faker->name()} Restaurant",
-            'id_gastronomy' => function() {
-                return Gastronomy::where('description', 'like', '%Italian%')->first()->id ?? 1;
-            },
-            'id_restaurant_type' => function() {
-                return RestaurantType::where('description', 'like', '%Pasta%')->first()->id ?? 1;
-            },
+            'name'          => "{$this->faker->name()} Restaurant",
+            'id_gastronomy' => (int)$randomGastronomy,
+            'id_restaurant_type' => (int)$randomRestaurantType,
             'image_restaurant' => null,
             'id_owner' => 1,
             'id_address' => 1

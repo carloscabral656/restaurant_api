@@ -39,7 +39,7 @@ class RestaurantsService extends ServiceAbstract
         
             if(isset($filters)){
                 if(array_key_exists('name', $filters)){
-                    $restaurants->where('restaurant.name', 'like', "%$filters[name]%");
+                    $restaurants->where('restaurants.name', 'like', "%$filters[name]%");
                 }
 
                 if(array_key_exists('gastronomy', $filters)){
@@ -50,7 +50,11 @@ class RestaurantsService extends ServiceAbstract
                     $restaurants->where('restaurant_type.id', '=', (int)$filters['restaurant_type']);
                 }
             }
-            return $restaurants->toSql();
+
+            return $restaurants
+                ->select('restaurants.*')
+                ->orderBy('restaurants.name')
+                ->get();
         }catch(Exception $e){
             throw $e;
         }

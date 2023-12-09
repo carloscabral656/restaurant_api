@@ -13,7 +13,7 @@ class Restaurant extends Model
     protected $table = "restaurants";
     protected $primaryKey = 'id';
     protected $fillable = ["name", "description", "id_gastronomy", "id_restaurant_type", "id_owner", "id_address"];
-    protected $with = ['gastronomy'];
+    protected $with = ['gastronomy', 'restaurantType'];
 
     public function gastronomy(){
         return $this->hasOne(Gastronomy::class, 'id', 'id_gastronomy');

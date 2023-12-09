@@ -8,13 +8,15 @@
 
 namespace App\DTOs;
 
+use Illuminate\Http\JsonResponse;
+
 class ApiResponse
 {
-    protected $success;
+    protected bool $success;
     protected $data;
-    protected $message;
-    protected $statusCode;
-    protected $metaData;
+    protected ?string $message;
+    protected int $statusCode;
+    protected ?string $metaData;
 
     public function __construct($success = true, $data = [], $message = '', $code, $metaData = null){
         $this->success = $success;
@@ -24,12 +26,13 @@ class ApiResponse
         $this->metaData = $metaData;
     }
 
-    public function createResponse(){
+    public function createResponse() : JsonResponse{
         return response()
             ->json(
                 [
                     'success' => $this->success,
                     'data'    => $this->data,
+                    'code'    => $this->statusCode,
                     'meta_data' => $this->metaData,
                     'message' => $this->message
                 ]

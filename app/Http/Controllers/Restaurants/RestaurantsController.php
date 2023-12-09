@@ -30,14 +30,11 @@ class RestaurantsController extends Controller
     public function index(Request $request) : JsonResponse
     {
         try{
-            $filters = (array)$request->get('filters');
+
+            $filters = null;
+            if($request->has('filters')) $filters = (array)$request->get('filters');
             $restaurants = $this->service->index($filters);
-            return (new ApiResponse(
-                success: true, 
-                data   : $restaurants, 
-                message: 'Restaurants found successfully.', 
-                code   : HttpStatus::OK
-            ))->createResponse();
+
             if(empty($restaurants))
                 return (
                     new ApiResponse (
