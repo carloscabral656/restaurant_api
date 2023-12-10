@@ -49,10 +49,15 @@ class RestaurantsController extends Controller
                     )
                 )->createResponse();
             }
+            
+            //dd($restaurants);
 
-            $restaurants = $restaurants->map(function($r){
-                return (new RestaurantsDTO())->createDTO($r);
-            });
+            $restaurants = $restaurants->map(
+                function($r)
+                {
+                    return (new RestaurantsDTO())->createDTO($r);
+                }
+            );
 
             return (
                 new ApiResponse

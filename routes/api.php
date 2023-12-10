@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Restaurants\RestaurantsController;
 use App\Http\Controllers\RestaurantsType\RestaurantTypeController;
 use App\Http\Controllers\Roles\RolesController;
-use App\Models\Restaurant;
 
 /*
 |--------------------------------------------------------------------------

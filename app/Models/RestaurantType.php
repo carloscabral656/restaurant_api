@@ -9,5 +9,8 @@ class RestaurantType extends Model
 {
     use HasFactory;
     protected $table = "restaurant_type";
-    protected  $fillable = ["description"];
+    protected $primaryKey = "id";
+    protected $fillable = [
+        "description"
+    ];
 }
