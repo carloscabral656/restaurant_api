@@ -46,8 +46,7 @@ Route::prefix("/v1")->group(function(){
     // --------------------------------------------------------------------
     
     // Restaurant's CRUD --------------------------------------------------
-    Route::resource('/restaurants', RestaurantsController::class)
-        ->middleware('auth:sanctum');
+    Route::resource('/restaurants', RestaurantsController::class);
     //---------------------------------------------------------------------
 
 
@@ -67,7 +66,7 @@ Route::prefix("/v1")->group(function(){
             )
         );
     });
-});
+})->middleware('auth:sanctum');
 
 // Authentication Route
 Route::prefix('auth')->group(function() {

@@ -13,7 +13,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // TODO: VALIDAR REQUEST.
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only(['email', 'password']);
         if(!auth()->attempt($credentials)) 
         {
             return 
