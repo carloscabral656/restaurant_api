@@ -9,7 +9,6 @@
 namespace App\DTOs;
 
 use Illuminate\Http\JsonResponse;
-use Iterator;
 
 class ApiResponse
 {
