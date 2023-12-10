@@ -38,8 +38,10 @@ class RestaurantsController extends Controller
 
             if(empty($restaurants))
             {
-                return (
-                    new ApiResponse (
+                return 
+                (
+                    new ApiResponse 
+                    (
                         success: true, 
                         data   : null, 
                         message: trans('Responses/Restaurants.NotFound'), 
@@ -52,24 +54,28 @@ class RestaurantsController extends Controller
                 return (new RestaurantsDTO())->createDTO($r);
             });
 
-            return (new ApiResponse(
-                        success: true, 
-                        data   : $restaurants->toArray(), 
-                        message: trans('Responses/Restaurants.Found'), 
-                        code   : HttpStatus::OK
-                    ))->createResponse();
-
-        }
-        catch(\Exception $e)
-        {
             return (
-                    new ApiResponse (
-                        success   : false, 
-                        data      : null, 
-                        message   : $e->getMessage(), 
-                        code      : HttpStatus::BAD_REQUEST
-                    )
-                )->createResponse();
+                new ApiResponse
+                (
+                    success: true, 
+                    data   : $restaurants->toArray(), 
+                    message: trans('Responses/Restaurants.Found'), 
+                    code   : HttpStatus::OK
+                )
+            )->createResponse();
+
+        } catch(\Exception $e)
+        {
+            return 
+            (
+                new ApiResponse 
+                (
+                    success   : false, 
+                    data      : null, 
+                    message   : $e->getMessage(), 
+                    code      : HttpStatus::BAD_REQUEST
+                )
+            )->createResponse();
         }
     }
 
