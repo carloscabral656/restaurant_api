@@ -1,5 +1,7 @@
 <?php
 
+use App\DTOs\ApiResponse;
+use App\Helpers\HttpStatus;
 use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\Auth\Api\LoginController;
 use App\Http\Controllers\Cupons\CuponsController;
@@ -24,34 +26,51 @@ use App\Models\Restaurant;
 
 Route::prefix("/v1")->group(function(){
     
-    // User's CRUD
+    // User's CRUD --------------------------------------------------------
     Route::resource("/users", UserController::class);
+    // --------------------------------------------------------------------
 
+    // Role's CRUD --------------------------------------------------------
     Route::resource("/roles", RolesController::class);
-    Route::resource("/addresses", AddressController::class);
-    Route::resource("/gastronomies", GastronomyController::class);
-    Route::resource("/restaurants-type", RestaurantTypeController::class);
+    // --------------------------------------------------------------------
     
-    // Restaurant's CRUD =======================================================
-    Route::resource('/restaurants', RestaurantsController::class)
-        ->only('index', 'show');
+    // Addresses's CRUD ---------------------------------------------------
+    Route::resource("/addresses", AddressController::class);
+    // --------------------------------------------------------------------
 
-    Route::middleware('auth:sanctum')
-        ->prefix('/restaurants')
-        ->group(function(){
-            Route::post('/', [RestaurantsController::class, 'create']);
-            Route::put('/', [RestaurantsController::class, 'update']);
-            Route::delete('/', [RestaurantsController::class, 'destroy']);
-        });
-    // =========================================================================
+    // Gastronomies's CRUD ------------------------------------------------
+    Route::resource("/gastronomies", GastronomyController::class);
+    // --------------------------------------------------------------------
+
+    // Restaurants's Type -------------------------------------------------
+    Route::resource("/restaurants-type", RestaurantTypeController::class);
+    // --------------------------------------------------------------------
+    
+    // Restaurant's CRUD --------------------------------------------------
+    Route::resource('/restaurants', RestaurantsController::class)
+        ->only(['create', 'update', 'destroy'])
+        ->middleware('auth:sanctum');
+
+    Route::resource('/restaurants', RestaurantsController::class)
+        ->only(['index', 'show']);
+    //---------------------------------------------------------------------
 
 
     Route::resource("/menus", MenuController::class);
     Route::resource("/itens", ItemController::class);
     Route::resource("/purchases", PurchasesController::class);
     Route::resource("/cupons", CuponsController::class);
-    Route::fallback(function(){
-        echo "This route doesn't exists.";
+    Route::fallback(function()
+    {
+        return 
+        (
+            new ApiResponse(
+                success: false,
+                data   : null,
+                message: "This route doesn't exists.",
+                code   : HttpStatus::BAD_REQUEST  
+            )
+        );
     });
 });
 

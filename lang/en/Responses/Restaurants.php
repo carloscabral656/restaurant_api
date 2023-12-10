@@ -10,10 +10,10 @@
         ],
 
         'Update' => [
-            '' => ''
+            'Success' => 'Restaurant updated successfully.'
         ],
 
         'Delete' => [
-            '' => ''
+            'Success' => 'Restaurant deleted successfully.'
         ]
     ];
