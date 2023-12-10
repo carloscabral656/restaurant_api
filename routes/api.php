@@ -47,11 +47,7 @@ Route::prefix("/v1")->group(function(){
     
     // Restaurant's CRUD --------------------------------------------------
     Route::resource('/restaurants', RestaurantsController::class)
-        ->only(['create', 'update', 'destroy'])
         ->middleware('auth:sanctum');
-
-    Route::resource('/restaurants', RestaurantsController::class)
-        ->only(['index', 'show']);
     //---------------------------------------------------------------------
 
 
