@@ -25,48 +25,51 @@ use App\Http\Controllers\Roles\RolesController;
 
 Route::prefix("/v1")->group(function(){
     
-    // User's CRUD --------------------------------------------------------
-    Route::resource("/users", UserController::class);
-    // --------------------------------------------------------------------
+    Route::middleware('auth:sanctum')->group(function() {
+        // User's CRUD --------------------------------------------------------
+        Route::resource("/users", UserController::class);
+        // --------------------------------------------------------------------
 
-    // Role's CRUD --------------------------------------------------------
-    Route::resource("/roles", RolesController::class);
-    // --------------------------------------------------------------------
-    
-    // Addresses's CRUD ---------------------------------------------------
-    Route::resource("/addresses", AddressController::class);
-    // --------------------------------------------------------------------
+        // Role's CRUD --------------------------------------------------------
+        Route::resource("/roles", RolesController::class);
+        // --------------------------------------------------------------------
+        
+        // Addresses's CRUD ---------------------------------------------------
+        Route::resource("/addresses", AddressController::class);
+        // --------------------------------------------------------------------
 
-    // Gastronomies's CRUD ------------------------------------------------
-    Route::resource("/gastronomies", GastronomyController::class);
-    // --------------------------------------------------------------------
+        // Gastronomies's CRUD ------------------------------------------------
+        Route::resource("/gastronomies", GastronomyController::class);
+        // --------------------------------------------------------------------
 
-    // Restaurants's Type -------------------------------------------------
-    Route::resource("/restaurants-type", RestaurantTypeController::class);
-    // --------------------------------------------------------------------
-    
-    // Restaurant's CRUD --------------------------------------------------
-    Route::resource('/restaurants', RestaurantsController::class);
-    //---------------------------------------------------------------------
+        // Restaurants's Type -------------------------------------------------
+        Route::resource("/restaurants-type", RestaurantTypeController::class);
+        // --------------------------------------------------------------------
+        
+        // Restaurant's CRUD --------------------------------------------------
+        Route::resource('/restaurants', RestaurantsController::class);
+        //---------------------------------------------------------------------
 
 
-    Route::resource("/menus", MenuController::class);
-    Route::resource("/itens", ItemController::class);
-    Route::resource("/purchases", PurchasesController::class);
-    Route::resource("/cupons", CuponsController::class);
-    Route::fallback(function()
-    {
-        return 
-        (
-            new ApiResponse(
-                success: false,
-                data   : null,
-                message: "This route doesn't exists.",
-                code   : HttpStatus::BAD_REQUEST  
-            )
-        );
-    });
-})->middleware('auth:sanctum');
+        Route::resource("/menus", MenuController::class);
+        Route::resource("/itens", ItemController::class);
+        Route::resource("/purchases", PurchasesController::class);
+        Route::resource("/cupons", CuponsController::class);
+        Route::fallback(function()
+        {
+            return 
+            (
+                new ApiResponse(
+                    success: false,
+                    data   : null,
+                    message: "This route doesn't exists.",
+                    code   : HttpStatus::BAD_REQUEST  
+                )
+            );
+        });
+    }); 
+     
+});
 
 // Authentication Route
 Route::prefix('auth')->group(function() {

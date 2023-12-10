@@ -5,14 +5,22 @@ namespace App\Http\Controllers\Auth\Api;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\Api\AuthRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+
+    /**
+     * Verifiy the digital identity of a client. Grant access to api.
+     * 
+     * @param Request $request
+     * @return JsonResponse
+    */
+    public function login(AuthRequest $request)
     {
-        // TODO: VALIDAR REQUEST.
         $credentials = $request->only(['email', 'password']);
         if(!auth()->attempt($credentials)) 
         {
@@ -48,5 +56,48 @@ class LoginController extends Controller
                 code   : HttpStatus::OK
             )
         )->createResponse();
+    }
+
+    /**
+     * Deletes all tokens from the authenticated user.
+     * 
+     * @param Request $request
+     * @return JsonResponse
+    */
+    public function logout(Request $request) : JsonResponse
+    {   
+        $request->user()->tokens()->delete();
+        return
+        (
+            new ApiResponse
+            (
+                success: true,
+                data   : null,
+                message: '',
+                code   : HttpStatus::OK
+            )
+        )->createResponse();
+    }
+
+
+    /**
+     * Returns the authenticated user
+     * 
+     * @param Request $request
+     * @return JsonResponse
+    */
+    public function me(Request $request) : JsonResponse
+    {
+        $user = $request->user();
+        return
+        (
+            new ApiResponse
+            (
+                success: true,
+                data   : $user,
+                message: '',
+                code   : HttpStatus::OK
+            )
+        )->createResponse(); 
     }
 }
