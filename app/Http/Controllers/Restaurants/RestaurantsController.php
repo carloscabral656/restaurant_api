@@ -49,9 +49,8 @@ class RestaurantsController extends Controller
                     )
                 )->createResponse();
             }
-            
-            //dd($restaurants);
-
+    
+            // Mapping retrivied data to input in a DTO class
             $restaurants = $restaurants->map(
                 function($r)
                 {

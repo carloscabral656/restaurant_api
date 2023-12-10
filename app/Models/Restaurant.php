@@ -42,4 +42,14 @@ class Restaurant extends Model
         return $this->hasMany(Menu::class, 'id_restaurant', 'id');
     }
 
+    public function owner() : HasOne 
+    {
+        return $this->hasOne(User::class, 'id', 'id_owner');
+    }
+
+    public function address() : HasOne 
+    {
+        return $this->hasOne(Address::class, 'id', 'id_address');
+    }
+
 }
