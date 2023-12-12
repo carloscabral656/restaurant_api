@@ -24,7 +24,7 @@ use App\Http\Controllers\Roles\RolesController;
 */
 
 Route::prefix("/v1")->group(function(){
-    
+
     Route::middleware('auth:sanctum')->group(function() {
         // User's CRUD --------------------------------------------------------
         Route::resource("/users", UserController::class);
@@ -33,7 +33,7 @@ Route::prefix("/v1")->group(function(){
         // Role's CRUD --------------------------------------------------------
         Route::resource("/roles", RolesController::class);
         // --------------------------------------------------------------------
-        
+
         // Addresses's CRUD ---------------------------------------------------
         Route::resource("/addresses", AddressController::class);
         // --------------------------------------------------------------------
@@ -45,36 +45,50 @@ Route::prefix("/v1")->group(function(){
         // Restaurants's Type -------------------------------------------------
         Route::resource("/restaurants-type", RestaurantTypeController::class);
         // --------------------------------------------------------------------
-        
+
         // Restaurant's CRUD --------------------------------------------------
         Route::resource('/restaurants', RestaurantsController::class);
         //---------------------------------------------------------------------
 
-
+        // Menus's CRUD -------------------------------------------------------
         Route::resource("/menus", MenuController::class);
+        //---------------------------------------------------------------------
+
+        // Itens's CRUD -------------------------------------------------------
         Route::resource("/itens", ItemController::class);
+        //---------------------------------------------------------------------
+
+        // Purchases's CRUD ---------------------------------------------------
         Route::resource("/purchases", PurchasesController::class);
+        //---------------------------------------------------------------------
+
+        // Cupons's CRUD ------------------------------------------------------
         Route::resource("/cupons", CuponsController::class);
+        //---------------------------------------------------------------------
+
         Route::fallback(function()
         {
-            return 
+            return
             (
                 new ApiResponse(
                     success: false,
                     data   : null,
                     message: "This route doesn't exists.",
-                    code   : HttpStatus::BAD_REQUEST  
+                    code   : HttpStatus::BAD_REQUEST
                 )
             );
         });
-    }); 
-     
+    });
+
 });
 
-// Authentication Route
+//---------------------------------------------------------------------
+//                      Authentication Route
+//---------------------------------------------------------------------
 Route::prefix('auth')->group(function() {
-    Route::post('login', [LoginController::class, 'login']);
-    Route::post('logout', [LoginController::class, 'logout']);
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::post('/user-authenticated', [LoginController::class, 'me']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -15,17 +15,17 @@ class LoginController extends Controller
 
     /**
      * Verifiy the digital identity of a client. Grant access to api.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
     */
-    public function login(AuthRequest $request)
+    public function login(AuthRequest $request) : JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
-        if(!auth()->attempt($credentials)) 
+        if(!auth()->attempt($credentials))
         {
-            return 
-            (    
+            return
+            (
                 new ApiResponse
                 (
                     success: false,
@@ -35,7 +35,7 @@ class LoginController extends Controller
                 )
             )->createResponse();
         }
-        
+
         $user = auth()->user();
 
         if($user instanceof User)
@@ -46,7 +46,7 @@ class LoginController extends Controller
         $data = [
             'token' => $token->plainTextToken
         ];
-        return 
+        return
         (
             new ApiResponse
             (
@@ -60,12 +60,12 @@ class LoginController extends Controller
 
     /**
      * Deletes all tokens from the authenticated user.
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
     */
     public function logout(Request $request) : JsonResponse
-    {   
+    {
         $request->user()->tokens()->delete();
         return
         (
@@ -82,13 +82,13 @@ class LoginController extends Controller
 
     /**
      * Returns the authenticated user
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
     */
     public function me(Request $request) : JsonResponse
     {
-        $user = $request->user();
+        $user = $request->user()->with(['roles']);
         return
         (
             new ApiResponse
@@ -98,6 +98,6 @@ class LoginController extends Controller
                 message: '',
                 code   : HttpStatus::OK
             )
-        )->createResponse(); 
+        )->createResponse();
     }
 }

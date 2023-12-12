@@ -44,7 +44,7 @@ class UserController extends Controller
             ]);
 
             DB::beginTransaction();
-            
+
             // Crypt the password
             $userData = $request->all();
             $userData['password'] = bcrypt($userData['password']);
