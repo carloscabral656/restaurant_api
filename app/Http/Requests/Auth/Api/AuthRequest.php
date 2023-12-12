@@ -51,7 +51,7 @@ class AuthRequest extends FormRequest
                 success: false,
                 data: $validator->errors()->toArray(),
                 message: 'Validation error.',
-                code: JsonResponse::HTTP_UNPROCESSABLE_ENTITY  
+                code: JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             ))->createResponse()
         );
     }

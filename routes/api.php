@@ -25,6 +25,15 @@ use App\Http\Controllers\Roles\RolesController;
 
 Route::prefix("/v1")->group(function(){
 
+    //---------------------------------------------------------------------
+    //                      Authentication Route
+    //---------------------------------------------------------------------
+    Route::prefix('auth')->group(function() {
+        Route::post('/login', [LoginController::class, 'login']);
+        Route::post('/logout', [LoginController::class, 'logout']);
+        Route::post('/user-authenticated', [LoginController::class, 'me']);
+    });
+
     Route::middleware('auth:sanctum')->group(function() {
         // User's CRUD --------------------------------------------------------
         Route::resource("/users", UserController::class);
@@ -66,29 +75,21 @@ Route::prefix("/v1")->group(function(){
         Route::resource("/cupons", CuponsController::class);
         //---------------------------------------------------------------------
 
-        Route::fallback(function()
-        {
-            return
-            (
-                new ApiResponse(
-                    success: false,
-                    data   : null,
-                    message: "This route doesn't exists.",
-                    code   : HttpStatus::BAD_REQUEST
-                )
-            );
-        });
     });
 
 });
 
-//---------------------------------------------------------------------
-//                      Authentication Route
-//---------------------------------------------------------------------
-Route::prefix('auth')->group(function() {
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::post('/logout', [LoginController::class, 'logout']);
-    Route::post('/user-authenticated', [LoginController::class, 'me']);
+Route::fallback(function()
+{
+    return
+    (
+        new ApiResponse(
+            success: false,
+            data   : null,
+            message: "This route doesn't exists.",
+            code   : HttpStatus::BAD_REQUEST
+        )
+    );
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

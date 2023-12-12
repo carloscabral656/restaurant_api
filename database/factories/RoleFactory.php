@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -20,8 +20,12 @@ class RoleFactory extends Factory
      */
     public function definition()
     {
+        static $roles = ['Owner', 'Client'];
+
         return [
-            //
+            'description' => array_shift($roles),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
     }
 }
