@@ -86,9 +86,9 @@ class LoginController extends Controller
      * @param Request $request
      * @return JsonResponse
     */
-    public function me(Request $request) : JsonResponse
+    public function me(Request $request)
     {
-        $user = $request->user()->with(['roles']);
+        $user = $request->user();
         return
         (
             new ApiResponse

@@ -13,12 +13,12 @@ use Illuminate\Http\JsonResponse;
 class ApiResponse
 {
     protected bool $success;
-    protected ?array $data;
+    protected mixed $data;
     protected ?string $message;
     protected int $statusCode;
     protected ?string $metaData;
 
-    public function __construct($success = true, $data = [], $message = '', $code, $metaData = null){
+    public function __construct($success = true, $data, $message = '', $code, $metaData = null){
         $this->success = $success;
         $this->data    = $data;
         $this->message = $message;

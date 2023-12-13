@@ -31,10 +31,14 @@ Route::prefix("/v1")->group(function(){
     Route::prefix('auth')->group(function() {
         Route::post('/login', [LoginController::class, 'login']);
         Route::post('/logout', [LoginController::class, 'logout']);
-        Route::post('/user-authenticated', [LoginController::class, 'me']);
     });
 
     Route::middleware('auth:sanctum')->group(function() {
+
+        // User Authenticated -------------------------------------------------
+        Route::post('/user', [LoginController::class, 'me']);
+        // --------------------------------------------------------------------
+
         // User's CRUD --------------------------------------------------------
         Route::resource("/users", UserController::class);
         // --------------------------------------------------------------------
