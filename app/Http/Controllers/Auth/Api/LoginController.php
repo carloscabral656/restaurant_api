@@ -7,6 +7,7 @@ use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Api\AuthRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -86,18 +87,32 @@ class LoginController extends Controller
      * @param Request $request
      * @return JsonResponse
     */
-    public function me(Request $request)
+    public function me(Request $request): JsonResponse
     {
-        $user = $request->user();
-        return
-        (
-            new ApiResponse
+        try
+        {
+            $user = $request->user();
+            return
             (
-                success: true,
-                data   : $user,
-                message: '',
-                code   : HttpStatus::OK
-            )
-        )->createResponse();
+                new ApiResponse
+                (
+                    success: true,
+                    data   : $user,
+                    message: '',
+                    code   : HttpStatus::OK
+                )
+            )->createResponse();
+        }catch(Exception $e){
+            return
+            (
+                new ApiResponse
+                (
+                    success: false,
+                    data   : null,
+                    message: $e->getMessage(),
+                    code   : HttpStatus::BAD_REQUEST
+                )
+            )->createResponse();
+        }
     }
 }

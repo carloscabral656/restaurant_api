@@ -36,7 +36,7 @@ Route::prefix("/v1")->group(function(){
     Route::middleware('auth:sanctum')->group(function() {
 
         // User Authenticated -------------------------------------------------
-        Route::post('/user', [LoginController::class, 'me']);
+        Route::get('/user-authenticated', [LoginController::class, 'me']);
         // --------------------------------------------------------------------
 
         // User's CRUD --------------------------------------------------------
