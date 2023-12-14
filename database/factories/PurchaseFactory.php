@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,15 @@ class PurchaseFactory extends Factory
      */
     public function definition()
     {
+
+        $users = User::all()->pluck('id');
+
         return [
-            //
+            "id_user"              => $users->random(),
+            "total_descount_items" => '',
+            "descount_purchase"    => '',
+            "total_gross_purchase" => '',
+            "total_net_purchase"   => ''
         ];
     }
 }

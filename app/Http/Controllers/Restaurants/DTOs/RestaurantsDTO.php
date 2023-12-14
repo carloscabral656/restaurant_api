@@ -6,12 +6,13 @@ use App\Http\Controllers\Gastronomies\DTOs\GastronomiesDTO;
 use App\Http\Controllers\RestaurantsType\DTOs\RestaurantsTypeDTO;
 use App\Models\Restaurant;
 
-class RestaurantsDTO 
+class RestaurantsDTO
 {
 
     protected Restaurant $restaurant;
     protected GastronomiesDTO $gastronomyDTO;
     protected RestaurantsTypeDTO $restaurantsTypeDTO;
+    protected MenusDTO $menuDTO;
 
     public function __construct()
     {
@@ -26,7 +27,8 @@ class RestaurantsDTO
             'name'            => $restaurant?->name,
             'description'     => $restaurant?->description,
             'gastronomy'      => $this->gastronomyDTO?->createDTO($restaurant->gastronomy),
-            'restaurant_type' => $this->restaurantsTypeDTO?->createDTO($restaurant->restaurant_type)
+            'restaurant_type' => $this->restaurantsTypeDTO?->createDTO($restaurant->restaurant_type),
+            'menus'           => null
         ];
     }
 }

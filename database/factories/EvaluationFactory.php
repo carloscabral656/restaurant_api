@@ -17,13 +17,13 @@ class EvaluationFactory extends Factory
      */
     public function definition()
     {
-        $gastronomies = [
+        $evaluation = [
             'Arabic', 'Brazilian', 'Japanese', 'Italian', 'Thai', 'French', 'German', 'British',
             'Chinese', 'Indian', 'Korean', 'Peruvian', 'Vegetarian'
         ];
 
         return [
-            'description' => $this->faker->unique()->randomElement($gastronomies),
+            'description' => $this->faker->unique()->randomElement($evaluation),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

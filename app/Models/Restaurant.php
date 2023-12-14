@@ -14,17 +14,18 @@ class Restaurant extends Model
 
     protected $table = "restaurants";
     protected $fillable = [
-        "name", 
-        "description", 
-        "image_restaurant", 
-        "id_gastronomy", 
-        "id_restaurant_type", 
+        "name",
+        "description",
+        "image_restaurant",
+        "id_gastronomy",
+        "id_restaurant_type",
         "id_owner",
         "id_address"
     ];
     protected $with = [
-        'gastronomy', 
-        'restaurant_type'
+        'gastronomy',
+        'restaurant_type',
+        'menus'
     ];
 
     public function gastronomy() : HasOne
@@ -42,12 +43,12 @@ class Restaurant extends Model
         return $this->hasMany(Menu::class, 'id_restaurant', 'id');
     }
 
-    public function owner() : HasOne 
+    public function owner() : HasOne
     {
         return $this->hasOne(User::class, 'id', 'id_owner');
     }
 
-    public function address() : HasOne 
+    public function address() : HasOne
     {
         return $this->hasOne(Address::class, 'id', 'id_address');
     }
