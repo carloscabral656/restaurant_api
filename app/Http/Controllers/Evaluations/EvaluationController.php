@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Evaluations;
 
+use App\Http\Controllers\Controller;
 use App\Models\Evaluation;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class EvaluationController extends Controller
 {
