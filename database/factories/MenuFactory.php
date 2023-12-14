@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class MenuFactory extends Factory
      */
     public function definition()
     {
+        $restaurants = Restaurant::all()->pluck('id');
         return [
-            //
+            "id_restaurant" => $this->faker->unique()->randomElement($restaurants),
+            "name" => "Menu's Chef"
         ];
     }
 }
