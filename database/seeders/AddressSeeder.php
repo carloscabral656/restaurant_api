@@ -20,7 +20,7 @@ class AddressSeeder extends Seeder
             'address' => 'Teste 1',
             'neighborhood' => 'teste 1',
             'number' => 111,
-            'city' => 'Ube',
+            'city' => 'Uberaba',
             'state' => 'MG',
             'created_at' => now(),
             'updated_at' =>  now()
