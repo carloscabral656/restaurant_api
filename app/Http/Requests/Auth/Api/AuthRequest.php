@@ -3,12 +3,10 @@
 namespace App\Http\Requests\Auth\Api;
 
 use App\DTOs\ApiResponse;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Validator;
 
 class AuthRequest extends FormRequest
 {
@@ -50,7 +48,7 @@ class AuthRequest extends FormRequest
             (new ApiResponse(
                 success: false,
                 data: $validator->errors()->toArray(),
-                message: 'Validation error.',
+                message: 'Validation Error.',
                 code: JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             ))->createResponse()
         );
