@@ -24,6 +24,7 @@ class ItemFactory extends Factory
         $typeItem = TypeItem::all()->pluck('id');
         $sales = Sale::all()->pluck('id');
         $unitPrice = rand(0, 100) / 3;
+
         return [
             "id_menu"     => $menus->random(),
             "id_type_item" => $typeItem->random(),
