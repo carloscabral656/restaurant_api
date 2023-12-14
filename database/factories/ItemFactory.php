@@ -16,8 +16,16 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
+        $typeItens = [
+            'Food',
+            'Fried',
+            'Health',
+            'Drinks'
+        ];
         return [
-            //
+            'description' => array_shift($typeItens),
+            'created_at'  => now(),
+            'updated_at'  => now()
         ];
     }
 }
