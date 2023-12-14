@@ -17,7 +17,7 @@ class User extends Authenticatable
     /**
      * Define the eager loading relationship(s)
     */
-    protected $with = ["roles"];
+    protected $with = ["roles", "address"];
 
     /**
      * The attributes that are mass assignable.

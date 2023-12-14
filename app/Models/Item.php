@@ -11,12 +11,12 @@ class Item extends Model
 
     protected $table = "items";
     protected $fillable = [
-        "id", 
-        "id_menu", 
-        "name", 
-        "description", 
+        "id_menu",
+        "id_type_item",
+        "id_sale",
+        "name",
+        "description",
         "img_item",
-        "unit_price",
-        "discount"
+        "unit_price"
     ];
 }
