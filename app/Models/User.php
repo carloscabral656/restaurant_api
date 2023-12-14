@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_address'
     ];
 
     /**
@@ -50,12 +54,20 @@ class User extends Authenticatable
      *
      *
     */
-    public function roles(){
+    public function roles(): BelongsToMany{
         return $this->belongsToMany(
             Role::class,
             'user_role',
             'id_user',
             'id_role'
         );
+    }
+
+    /**
+     *
+     *
+    */
+    public function address(): HasOne {
+        return $this->hasOne(Address::class, 'id_address', 'id');
     }
 }

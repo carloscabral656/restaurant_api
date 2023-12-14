@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Menu;
 use App\Models\Restaurant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,9 +18,6 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('menus')->insert([
-            'name'          => 'MENU TESTE',
-            'id_restaurant' =>  DB::table('restaurants')->first()->id                
-        ]);
+        Menu::factory(100)->create();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -26,6 +27,9 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'id_address' => function(): int{
+                return 1;
+            },
             'password' => Hash::make("12345"), // password
             'remember_token' => Str::random(10)
         ];
@@ -46,10 +50,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            // Adicione o usuário a uma ou mais roles através da tabela pivô
             $roles = [1, 2]; // IDs das roles 'Owner' e 'Client' na tabela roles
-
-            // Anexe aleatoriamente um ou mais papéis ao usuário
             $user->roles()->attach($this->faker->randomElements($roles, $this->faker->numberBetween(1, 2)));
         });
     }

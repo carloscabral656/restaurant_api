@@ -18,8 +18,9 @@ class MenuFactory extends Factory
     public function definition()
     {
         $restaurants = Restaurant::all()->pluck('id');
+        $restaurant = (int) $restaurants->shift(1);
         return [
-            "id_restaurant" => $this->faker->unique()->randomElement($restaurants),
+            "id_restaurant" => $restaurant,
             "name" => "Menu's Chef"
         ];
     }
