@@ -19,7 +19,7 @@ class RestaurantTypeFactory extends Factory
     {
         return [
             'description' => $this->faker->unique()->randomElement([
-                'Tradicional', 'Health', 'Pastas', 'Meat', 'Fishes and Sea Food'
+                'Tradicional', 'Health', 'Junk Food', 'Family', 'Fishes and Sea Food'
             ]),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

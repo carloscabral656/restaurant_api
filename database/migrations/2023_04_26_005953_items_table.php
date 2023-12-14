@@ -22,11 +22,13 @@ return new class extends Migration
             $table->unsignedBigInteger('id_type_item');
             $table->foreign("id_type_item")->references("id")->on("type_item")->cascadeOnDelete();
 
+            $table->unsignedBigInteger('id_sale')->nullable();
+            $table->foreign('id_sale')->references('id')->on("sales");
+
             $table->string("name");
             $table->string('description');
             $table->string('img_item');
             $table->float('unit_price');
-            $table->float('discount');
 
             $table->timestamps();
         });
