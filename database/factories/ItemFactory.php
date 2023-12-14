@@ -26,13 +26,13 @@ class ItemFactory extends Factory
         $unitPrice = rand(0, 100) / 3;
 
         return [
-            "id_menu"     => $menus->random(),
+            "id_menu"      => $menus->random(),
             "id_type_item" => $typeItem->random(),
-            "id_sale"     => $sales->random(),
-            "name"        => $this->faker->name(),
-            "description" => 'asdasdasdasdasdasda',
-            "img_item"    => 'asdasdadasdasdasd',
-            "unit_price"  => $unitPrice
+            "id_sale"      => $sales->random(),
+            "name"         => $this->faker->name(),
+            "description"  => 'asdasdasdasdasdasda',
+            "img_item"     => 'asdasdadasdasdasd',
+            "unit_price"   => $unitPrice
         ];
     }
 }
