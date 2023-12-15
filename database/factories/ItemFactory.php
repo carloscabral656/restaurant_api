@@ -35,4 +35,13 @@ class ItemFactory extends Factory
             "unit_price"   => $unitPrice
         ];
     }
+
+    public function withCustomMenu(int $idMenu)
+    {
+        return $this->state(function(array $attributes) use($idMenu) {
+            return [
+                'id_menu' => $idMenu
+            ];
+        });
+    }
 }

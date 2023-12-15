@@ -22,10 +22,10 @@ class PurchaseFactory extends Factory
 
         return [
             "id_user"              => $users->random(),
-            "total_descount_items" => '',
-            "descount_purchase"    => '',
-            "total_gross_purchase" => '',
-            "total_net_purchase"   => ''
+            "total_descount_items" => 1,
+            "descount_purchase"    => 1,
+            "total_gross_purchase" => 1,
+            "total_net_purchase"   => 1
         ];
     }
 }

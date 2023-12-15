@@ -14,8 +14,8 @@ class RestaurantFactory extends Factory
 {
 
     /**
-     * 
-     * 
+     *
+     *
     */
     protected $model = Restaurant::class;
 
@@ -32,6 +32,7 @@ class RestaurantFactory extends Factory
 
         return [
             'name'          => "{$this->faker->name()} Restaurant",
+            'description'   => 'The best food of',
             'id_gastronomy' => (int)$randomGastronomy,
             'id_restaurant_type' => (int)$randomRestaurantType,
             'image_restaurant' => null,

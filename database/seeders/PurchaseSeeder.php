@@ -16,6 +16,6 @@ class PurchaseSeeder extends Seeder
      */
     public function run()
     {
-        Purchase::factory(2)->create();
+        Purchase::factory(100)->create();
     }
 }

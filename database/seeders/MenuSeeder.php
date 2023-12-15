@@ -4,10 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Menu;
 use App\Models\Restaurant;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use function Nette\Utils\first;
 
 class MenuSeeder extends Seeder
 {
@@ -18,6 +15,7 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        Menu::factory(100)->create();
+        $qtdRestaurants = Restaurant::all()->count();
+        Menu::factory($qtdRestaurants)->create();
     }
 }

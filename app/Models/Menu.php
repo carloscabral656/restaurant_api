@@ -13,7 +13,6 @@ class Menu extends Model
     protected $table = "menus";
 
     protected $fillable = [
-        "id",
         "id_restaurant",
         "name",
         "description"

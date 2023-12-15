@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MenuFactory extends Factory
 {
+
+    protected static $initialized = false;
+    protected static $restaurants = null;
+
     /**
      * Define the model's default state.
      *
@@ -17,8 +21,14 @@ class MenuFactory extends Factory
      */
     public function definition()
     {
-        $restaurants = Restaurant::all()->pluck('id');
-        $restaurant = (int) $restaurants->shift(1);
+
+        if (!self::$initialized) {
+            self::$restaurants = Restaurant::pluck('id');
+            self::$initialized = true;
+        }
+
+        $restaurant = (int)self::$restaurants->shift();
+
         return [
             "id_restaurant" => $restaurant,
             "name" => "Menu's Chef"

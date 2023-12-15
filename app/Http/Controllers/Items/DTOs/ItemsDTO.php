@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers\Items\DTOs;
 
+use App\Http\Sales\DTOs\SalesDTO;
 use App\Models\Item;
 
 class ItemsDTO {
 
-    public function __construct(){
+    protected SalesDTO $salesDTO;
+
+    public function __construct() {
+        $this->salesDTO = app(SalesDTO::class);
     }
 
     public function createDTO(Item $i): array
     {
         return [
-            'id'      => $i->id,
-            'name'    => $i->name
+            "name" => $i->name,
+            "description" => $i->description,
+            "img_item" => $i->img_item,
+            "unit_price" => $i->unit_price,
+            "sale" => $this->salesDTO->createDTO($i->sale)
         ];
     }
 }
