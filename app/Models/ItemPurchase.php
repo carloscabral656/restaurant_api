@@ -10,5 +10,9 @@ class ItemPurchase extends Model
     use HasFactory;
 
     protected $table = "items_purchases";
-    protected $fillable = ["id_item", "id_purchase"];
+
+    protected $fillable = [
+        "id_item",
+        "id_purchase"
+    ];
 }

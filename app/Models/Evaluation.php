@@ -12,7 +12,6 @@ class Evaluation extends Model
     protected $table = 'evaluations';
     protected $fillable = [
         'id_purchase',
-        'id_restaurant',
         'evaluation',
         'comment'
     ];

@@ -19,9 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_purchase');
             $table->foreign('id_purchase')->references('id')->on('purchases');
 
-            $table->unsignedBigInteger('id_restaurant');
-            $table->foreign('id_restaurant')->references('id')->on('restaurants');
-
             $table->integer('evaluation');
             $table->string('comment');
 

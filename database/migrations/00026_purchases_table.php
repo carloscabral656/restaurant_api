@@ -19,11 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger("id_user");
             $table->foreign("id_user")->references("id")->on("users");
 
+            $table->unsignedBigInteger('id_restaurant');
+            $table->foreign('id_restaurant')->references('id')->on('restaurants');
+
             $table->float("total_descount_items");
             $table->float("descount_purchase");
             $table->float("total_gross_purchase");
             $table->float("total_net_purchase");
-            
 
             $table->timestamps();
         });

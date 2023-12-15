@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             TypeItemSeeder::class,
             SaleSeeder::class,
             ItemSeeder::class,
-            PurchaseSeeder::class
+            PurchaseSeeder::class,
+            EvaluationSeeder::class
         ]);
     }
 }

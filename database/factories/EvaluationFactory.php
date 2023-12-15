@@ -17,15 +17,23 @@ class EvaluationFactory extends Factory
      */
     public function definition()
     {
-        $evaluation = [
-            'Arabic', 'Brazilian', 'Japanese', 'Italian', 'Thai', 'French', 'German', 'British',
-            'Chinese', 'Indian', 'Korean', 'Peruvian', 'Vegetarian'
-        ];
-
         return [
-            'description' => $this->faker->unique()->randomElement($evaluation),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'evaluation' => $this->faker->randomElement([1, 2, 3, 4, 5]),
+            'comment' => ''
         ];
+    }
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+    */
+    public function forPurchase(int $idPurchase)
+    {
+        return $this->state(function(array $attributes) use($idPurchase) {
+            return [
+                'id_purchase' => $idPurchase
+            ];
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,11 +18,12 @@ class PurchaseFactory extends Factory
      */
     public function definition()
     {
-
         $users = User::all()->pluck('id');
+        $restaurants = Restaurant::all()->pluck('id');
 
         return [
-            "id_user"              => $users->random(),
+            "id_user" => $users->random(),
+            "id_restaurant" => $restaurants->random(),
             "total_descount_items" => 1,
             "descount_purchase"    => 1,
             "total_gross_purchase" => 1,
