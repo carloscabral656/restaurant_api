@@ -17,7 +17,7 @@ class ItemController extends Controller
 
     public function __construct(ItemsServiceConcrete $service)
     {
-       $this->service = $service; 
+       $this->service = $service;
     }
 
     /**
@@ -46,7 +46,7 @@ class ItemController extends Controller
         try{
             $request->validate([
                 'id_menu'      => 'required',
-                'name'         => 'required',  
+                'name'         => 'required',
                 'description'  => 'required',
                 'img_item'     => 'required',
                 'unit_price'   => 'required',
@@ -92,7 +92,7 @@ class ItemController extends Controller
         try{
             $request->validate([
                 'id_menu'      => 'required',
-                'name'         => 'required',  
+                'name'         => 'required',
                 'description'  => 'required',
                 'img_item'     => 'required',
                 'unit_price'   => 'required',
@@ -117,6 +117,18 @@ class ItemController extends Controller
     {
         try{
             $item = $this->service->destroy($id);
+            return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
+        }catch(ValidationException $e){
+            return (new ApiResponse(false, null, '', HttpStatus::BAD_REQUEST))->createResponse();
+        }catch(Exception $e){
+            return (new ApiResponse(false, $e->getMessage(), '', HttpStatus::INTERNAL_SERVER_ERROR))->createResponse();
+        }
+    }
+
+    public function imagem($idItem) : JsonResponse
+    {
+        try{
+            $item = $this->service->imagem($idItem);
             return (new ApiResponse(true, $item, '', HttpStatus::OK))->createResponse();
         }catch(ValidationException $e){
             return (new ApiResponse(false, null, '', HttpStatus::BAD_REQUEST))->createResponse();

@@ -14,14 +14,12 @@ class SalesDTO
     public function createDTO(Sale $sale): array
     {
         return [
-            "id"       => $sale->description,
-            "discount" => $sale->discount,
-            "active"   => function() use($sale) {
-                $today = Carbon::now();
-                $begin = Carbon::createFromTimestamp($sale->begin_at);
-                $finish = Carbon::createFromTimestamp($sale->finish);
-                return $today->between($begin, $finish);
-            }
+            "name"        => $sale->name,
+            "description" => $sale->description,
+            "discount"    => $sale->discount,
+            "begin_at"    => $sale->begin_at,
+            "end_at"      => $sale->end_at,
+            "active"      => $sale->isActive()
         ];
     }
 }

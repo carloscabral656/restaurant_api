@@ -18,8 +18,8 @@ class ItemsDTO {
         return [
             "name" => $i->name,
             "description" => $i->description,
-            "img_item" => $i->img_item,
-            "unit_price" => $i->unit_price,
+            "img_item"    => asset($i->img_item),
+            "unit_price"  => $i->unit_price,
             "sale" => $this->salesDTO->createDTO($i->sale)
         ];
     }

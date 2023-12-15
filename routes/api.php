@@ -79,6 +79,11 @@ Route::prefix("/v1")->group(function(){
         Route::resource("/cupons", CuponsController::class);
         //---------------------------------------------------------------------
 
+
+        // Imagens routes -----------------------------------------------------
+        Route::get("/imagens/{id}", [ItemController::class, 'imagem']);
+        //---------------------------------------------------------------------
+
     });
 
 });

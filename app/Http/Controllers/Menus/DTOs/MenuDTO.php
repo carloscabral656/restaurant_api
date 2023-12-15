@@ -19,7 +19,7 @@ class MenuDTO {
         return [
             'id'   => (int)$menu->id,
             'name' => $menu->name,
-            'discription' => $menu->description,
+            'description' => $menu->description,
             'itens' => $menu->itens?->map(function($item){
                 return $this->itemsDTO?->createDTO($item);
             })->toArray()
