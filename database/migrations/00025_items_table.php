@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_sale')->nullable();
             $table->foreign('id_sale')->references('id')->on("sales");
 
-            $table->string("name");
+            $table->string('name');
             $table->string('description');
             $table->string('img_item');
             $table->float('unit_price');
