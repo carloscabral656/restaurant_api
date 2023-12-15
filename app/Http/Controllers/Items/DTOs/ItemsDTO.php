@@ -13,7 +13,6 @@ class ItemsDTO {
     {
         return [
             'id'      => $i->id,
-            'id_menu' => $i->id_menu,
             'name'    => $i->name
         ];
     }

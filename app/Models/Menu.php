@@ -15,7 +15,8 @@ class Menu extends Model
     protected $fillable = [
         "id",
         "id_restaurant",
-        "name"
+        "name",
+        "description"
     ];
 
     protected $with = ['itens'];

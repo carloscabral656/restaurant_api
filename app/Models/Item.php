@@ -22,12 +22,12 @@ class Item extends Model
         "unit_price"
     ];
 
-    protected $with = ['sale'];
+    protected $with = ['type_item', 'sale'];
 
     /**
      *
     */
-    protected function type_item(): HasOne
+    public function type_item(): HasOne
     {
         return $this->hasOne(TypeItem::class, 'id', 'id_type_item');
     }
@@ -35,7 +35,7 @@ class Item extends Model
     /**
      *
     */
-    protected function sale(): HasOne
+    public function sale(): HasOne
     {
         return  $this->hasOne(Sale::class, 'id', 'id_sale');
     }

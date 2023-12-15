@@ -8,24 +8,21 @@ use App\Models\Menu;
 use Illuminate\Database\Eloquent\Collection;
 
 class MenuDTO {
-    protected ItemsDTO $ItemsDTO;
+    protected ItemsDTO $itemsDTO;
 
     public function __construct(){
-        $this->ItemsDTO = app(ItemsDTO::class);
+        $this->itemsDTO = app(ItemsDTO::class);
     }
 
-    public function createDTO(Collection $menus) : array
+    public function createDTO(Menu $menu) : array
     {
-
-        $menus = $menus->map(function(Menu $menu): array
-        {
-            return [
-                'id'    => $menu->id,
-                'name'  => $menu->name,
-                'itens' => $this->ItemsDTO?->createDTO($menu->itens)
-            ];
-        });
-
-        return $menus->toArray();
+        return [
+            'id'   => (int)$menu->id,
+            'name' => $menu->name,
+            'discription' => $menu->description,
+            'itens' => $menu->itens?->map(function($item){
+                return $this->itemsDTO?->createDTO($item);
+            })->toArray()
+        ];
     }
 }
