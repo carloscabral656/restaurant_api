@@ -22,6 +22,8 @@ class Purchase extends Model
         "total_net_purchase"    // total_gross_purchase - total_descount_items - descount_purchase
     ];
 
+    protected $with = ['evaluation'];
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_user', 'id');
@@ -30,6 +32,11 @@ class Purchase extends Model
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, ItemPurchase::class, 'id_purchase', 'id_item');
+    }
+
+    public function evaluation()
+    {
+        return $this->hasOne(Evaluation::class, 'id_purchase', 'id');
     }
 
 }

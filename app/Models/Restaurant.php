@@ -26,10 +26,13 @@ class Restaurant extends Model
 
     protected $with = [
         'gastronomy',
-        'restaurant_type',
-        'menus',
-        'owner'
+        'purchases'
     ];
+
+    public function evaluationAvg(): ?float 
+    {
+        return round($this->purchases?->pluck('evaluation')?->pluck('evaluation')?->avg(), 1);
+    }
 
     public function gastronomy() : HasOne
     {
@@ -56,9 +59,9 @@ class Restaurant extends Model
         return $this->hasOne(Address::class, 'id', 'id_address');
     }
 
-    public function evaluation(): int
+    public function purchases()
     {
-        return 1;
+        return $this->hasMany(Purchase::class, 'id_restaurant', 'id');
     }
 
 }

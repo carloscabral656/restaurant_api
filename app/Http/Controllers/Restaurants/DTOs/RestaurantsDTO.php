@@ -42,6 +42,7 @@ class RestaurantsDTO
             'menus'           => $restaurant->menus?->map(function($menu){
                 return $this->menuDTO->createDTO($menu);
             })->toArray(),
+            'evaluation'     =>  $restaurant->evaluationAvg()
 
         ];
     }

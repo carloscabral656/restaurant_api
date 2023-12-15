@@ -28,7 +28,7 @@ class RestaurantsController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         try{
 
@@ -148,11 +148,12 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         try
         {
             $restaurant = $this->service->findBy($id);
+
             if(empty($restaurant))
             {
                 return
