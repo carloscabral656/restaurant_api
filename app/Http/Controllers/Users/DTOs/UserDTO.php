@@ -9,9 +9,9 @@ class UserDTO {
     public function __construct(){
     }
 
-    public function createDTO(User $user){
+    public function createDTO(User $user): array {
         return [
-            "id"     => $user->id, 
+            "id"   => $user->id,
             "name" => $user->name
         ];
     }

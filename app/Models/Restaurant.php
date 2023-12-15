@@ -13,6 +13,7 @@ class Restaurant extends Model
     use HasFactory;
 
     protected $table = "restaurants";
+
     protected $fillable = [
         "name",
         "description",
@@ -22,10 +23,12 @@ class Restaurant extends Model
         "id_owner",
         "id_address"
     ];
+
     protected $with = [
         'gastronomy',
         'restaurant_type',
-        'menus'
+        'menus',
+        'owner'
     ];
 
     public function gastronomy() : HasOne

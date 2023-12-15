@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Restaurants\DTOs;
 
 use App\Http\Controllers\Gastronomies\DTOs\GastronomiesDTO;
+use App\Http\Controllers\Menus\DTOs\MenuDTO;
 use App\Http\Controllers\RestaurantsType\DTOs\RestaurantsTypeDTO;
+use App\Http\Controllers\Users\DTOs\UserDTO;
 use App\Models\Restaurant;
 
 class RestaurantsDTO
@@ -12,12 +14,15 @@ class RestaurantsDTO
     protected Restaurant $restaurant;
     protected GastronomiesDTO $gastronomyDTO;
     protected RestaurantsTypeDTO $restaurantsTypeDTO;
-    protected MenusDTO $menuDTO;
+    protected MenuDTO $menuDTO;
+    protected UserDTO $userDTO;
 
     public function __construct()
     {
         $this->gastronomyDTO = app(GastronomiesDTO::class);
         $this->restaurantsTypeDTO = app(RestaurantsTypeDTO::class);
+        $this->menuDTO = app(MenuDTO::class);
+        $this->userDTO = app(UserDTO::class);
     }
 
     public function createDTO(Restaurant $restaurant)
@@ -28,7 +33,8 @@ class RestaurantsDTO
             'description'     => $restaurant?->description,
             'gastronomy'      => $this->gastronomyDTO?->createDTO($restaurant->gastronomy),
             'restaurant_type' => $this->restaurantsTypeDTO?->createDTO($restaurant->restaurant_type),
-            'menus'           => null
+            'menus'           => $this->menuDTO?->createDTO($restaurant->menus),
+            'owner'           => $this->userDTO?->createDTO($restaurant->owner),
         ];
     }
 }

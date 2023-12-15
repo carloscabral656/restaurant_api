@@ -24,11 +24,11 @@ class RestaurantsController extends Controller
 
     /**
      * Display a listing of the resource.
-     * 
-     * @param Request $request 
+     *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request) : JsonResponse
+    public function index(Request $request): JsonResponse
     {
         try{
 
@@ -38,18 +38,18 @@ class RestaurantsController extends Controller
 
             if(empty($restaurants))
             {
-                return 
+                return
                 (
-                    new ApiResponse 
+                    new ApiResponse
                     (
-                        success: true, 
-                        data   : null, 
-                        message: trans('Responses/Restaurants.NotFound'), 
+                        success: true,
+                        data   : null,
+                        message: trans('Responses/Restaurants.NotFound'),
                         code   : HttpStatus::OK
                     )
                 )->createResponse();
             }
-    
+
             // Mapping retrivied data to input in a DTO class
             $restaurants = $restaurants->map(
                 function($r)
@@ -61,22 +61,22 @@ class RestaurantsController extends Controller
             return (
                 new ApiResponse
                 (
-                    success: true, 
-                    data   : $restaurants->toArray(), 
-                    message: trans('Responses/Restaurants.Found'), 
+                    success: true,
+                    data   : $restaurants->toArray(),
+                    message: trans('Responses/Restaurants.Found'),
                     code   : HttpStatus::OK
                 )
             )->createResponse();
 
         } catch(\Exception $e)
         {
-            return 
+            return
             (
-                new ApiResponse 
+                new ApiResponse
                 (
-                    success   : false, 
-                    data      : null, 
-                    message   : $e->getMessage(), 
+                    success   : false,
+                    data      : null,
+                    message   : $e->getMessage(),
                     code      : HttpStatus::BAD_REQUEST
                 )
             )->createResponse();
@@ -95,7 +95,7 @@ class RestaurantsController extends Controller
         {
             $request->validate([
                 'name'           => 'required',
-                'id_address'     => 'required',  
+                'id_address'     => 'required',
                 'id_gastronomy'  => 'required',
                 'image_restaurant' => 'required',
                 'id_restaurant_type' => 'required',
@@ -103,39 +103,39 @@ class RestaurantsController extends Controller
                 'id_address' => 'required'
             ]);
             $restaurant = $this->service->store($request->all());
-            return 
+            return
             (
                 new ApiResponse
                 (
-                    success: true, 
-                    data   : $restaurant, 
-                    message: trans('Responses/Restaurants.Found'), 
+                    success: true,
+                    data   : $restaurant,
+                    message: trans('Responses/Restaurants.Found'),
                     code   : HttpStatus::OK
                 )
             )->createResponse();
         }
         catch(ValidationException $e)
         {
-            return 
+            return
             (
                 new ApiResponse
                 (
-                    success: false, 
-                    data   : null, 
-                    message: $e->getMessage(), 
+                    success: false,
+                    data   : null,
+                    message: $e->getMessage(),
                     code   : HttpStatus::BAD_REQUEST
                 )
             )->createResponse();
         }
         catch(Exception $e)
         {
-            return 
+            return
             (
                 new ApiResponse
                 (
-                    success: false, 
-                    data   : $e->getMessage(), 
-                    message: '', 
+                    success: false,
+                    data   : $e->getMessage(),
+                    message: '',
                     code   : HttpStatus::INTERNAL_SERVER_ERROR
                 )
             )->createResponse();
@@ -148,45 +148,45 @@ class RestaurantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id) 
+    public function show(int $id)
     {
         try
         {
             $restaurant = $this->service->findBy($id);
             if(empty($restaurant))
             {
-                return 
+                return
                 (
                     new ApiResponse
                     (
-                        success: false, 
-                        data   : null, 
-                        message: trans('Responses/Restaurants.NotFound'), 
+                        success: false,
+                        data   : null,
+                        message: trans('Responses/Restaurants.NotFound'),
                         code   : HttpStatus::OK
                     )
-                )->createResponse(); 
-            } 
+                )->createResponse();
+            }
 
-            return 
+            return
             (
                 new ApiResponse
                 (
-                    success: true,    
-                    data   : $restaurant->toArray(), 
-                    message: trans('Responses/Restaurants.Found'), 
+                    success: true,
+                    data   : $restaurant->toArray(),
+                    message: trans('Responses/Restaurants.Found'),
                     code   : HttpStatus::OK
                 )
             )->createResponse();
 
         }catch(Exception $e)
         {
-            return 
+            return
             (
                 new ApiResponse
                 (
-                    success: false, 
-                    data   : null, 
-                    message: $e->getMessage(), 
+                    success: false,
+                    data   : null,
+                    message: $e->getMessage(),
                     code   : HttpStatus::OK
                 )
             )->createResponse();
@@ -206,7 +206,7 @@ class RestaurantsController extends Controller
         try{
             $request->validate([
                 'name'               => 'required',
-                'id_address'         => 'required',  
+                'id_address'         => 'required',
                 'image_restaurant'   => 'required',
                 'id_gastronomy'      => 'required',
                 'id_restaurant_type' => 'required',
@@ -215,24 +215,24 @@ class RestaurantsController extends Controller
             ]);
             $restaurant = $this->service->findBy($id);
             if(empty($restaurant)){
-                return 
+                return
                 (
                     new ApiResponse (
-                        success: false, 
-                        data   : null, 
-                        message: trans('Responses/Restaurants.NotFound'), 
+                        success: false,
+                        data   : null,
+                        message: trans('Responses/Restaurants.NotFound'),
                         code   : HttpStatus::BAD_REQUEST
                     )
                 )->createResponse();
             }
-            
+
             $restaurant = $this->service->update($request->all(), $id);
-            return 
+            return
             (
                 new ApiResponse (
-                    success: true, 
-                    data   : $restaurant, 
-                    message: trans('Responses/Restaurants.Update.Success'), 
+                    success: true,
+                    data   : $restaurant,
+                    message: trans('Responses/Restaurants.Update.Success'),
                     code   : HttpStatus::BAD_REQUEST
                 )
             )->createResponse();
@@ -240,9 +240,9 @@ class RestaurantsController extends Controller
         {
             return (
                     new ApiResponse(
-                        success: false, 
-                        data   : null, 
-                        message: $e->errors(), 
+                        success: false,
+                        data   : null,
+                        message: $e->errors(),
                         code   : HttpStatus::BAD_REQUEST
                     )
                 )->createResponse();
@@ -250,9 +250,9 @@ class RestaurantsController extends Controller
         {
             return (
                     new ApiResponse(
-                        success: false, 
-                        data   : null, 
-                        message: $e->getMessage(), 
+                        success: false,
+                        data   : null,
+                        message: $e->getMessage(),
                         code   : HttpStatus::INTERNAL_SERVER_ERROR
                     )
                 )->createResponse();
@@ -272,9 +272,9 @@ class RestaurantsController extends Controller
             if(empty($restaurant)) {
                 return (
                         new ApiResponse(
-                            success: false, 
-                            data   : null, 
-                            message: "Restaurant not found.", 
+                            success: false,
+                            data   : null,
+                            message: "Restaurant not found.",
                             code   : HttpStatus::BAD_REQUEST
                         )
                     )->createResponse();
@@ -282,18 +282,18 @@ class RestaurantsController extends Controller
             $destroyed = $this->service->destroy($id);
             return (
                     new ApiResponse(
-                        success: true, 
-                        data   : $destroyed, 
-                        message: "Restaurant deleted successfully.", 
+                        success: true,
+                        data   : $destroyed,
+                        message: "Restaurant deleted successfully.",
                         code   : HttpStatus::OK
                     )
                 )->createResponse();
         }catch(Exception $e){
             return (
                 new ApiResponse(
-                    success: true, 
-                    data   : null, 
-                    message: $e->getMessage(), 
+                    success: true,
+                    data   : null,
+                    message: $e->getMessage(),
                     code   : HttpStatus::INTERNAL_SERVER_ERROR
                 )
             )->createResponse();

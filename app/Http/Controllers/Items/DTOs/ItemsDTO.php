@@ -9,10 +9,12 @@ class ItemsDTO {
     public function __construct(){
     }
 
-    public function createDTO(Item $i){
+    public function createDTO(Item $i): array
+    {
         return [
-            'id'    => $i->id,
-            'name'  => $i->name
+            'id'      => $i->id,
+            'id_menu' => $i->id_menu,
+            'name'    => $i->name
         ];
     }
 }

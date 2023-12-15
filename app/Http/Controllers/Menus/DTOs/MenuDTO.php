@@ -3,23 +3,29 @@
 namespace App\Http\Controllers\Menus\DTOs;
 
 use App\Http\Controllers\Items\DTOs\ItemsDTO;
+use App\Models\Item;
 use App\Models\Menu;
+use Illuminate\Database\Eloquent\Collection;
 
 class MenuDTO {
-    protected ItemsDTO $item;
+    protected ItemsDTO $ItemsDTO;
 
     public function __construct(){
-        $this->item = app(ItemsDTO::class);
+        $this->ItemsDTO = app(ItemsDTO::class);
     }
 
-    public function createDTO(Menu $m){
-        $itens = $m->itens->map(function($i){
-            return (new ItemsDTO())->createDTO($i);
+    public function createDTO(Collection $menus) : array
+    {
+
+        $menus = $menus->map(function(Menu $menu): array
+        {
+            return [
+                'id'    => $menu->id,
+                'name'  => $menu->name,
+                'itens' => $this->ItemsDTO?->createDTO($menu->itens)
+            ];
         });
-        return [
-            'id'    => $m->id,
-            'name'  => $m->name,
-            'itens' => $itens
-        ];
+
+        return $menus->toArray();
     }
 }
