@@ -56,9 +56,9 @@ class Restaurant extends Model
         return $this->hasOne(Address::class, 'id', 'id_address');
     }
 
-    public function evaluation()
+    public function evaluation(): int
     {
-        return null;
+        return 1;
     }
 
 }
