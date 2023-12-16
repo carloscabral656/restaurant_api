@@ -7,19 +7,23 @@ use Carbon\Carbon;
 
 class SalesDTO
 {
-    public function __construct()
+
+    private Sale $sale;
+
+    public function __construct(Sale $sale)
     {
+        $this->sale = $sale;
     }
 
-    public function createDTO(Sale $sale): array
+    public function createDTO(): array
     {
         return [
-            "name"        => $sale->name,
-            "description" => $sale->description,
-            "discount"    => $sale->discount,
-            "begin_at"    => $sale->begin_at,
-            "end_at"      => $sale->end_at,
-            "active"      => $sale->isActive()
+            "name"        => $this->sale->name,
+            "description" => $this->sale->description,
+            "discount"    => $this->sale->discount,
+            "begin_at"    => $this->sale->begin_at,
+            "end_at"      => $this->sale->end_at,
+            "active"      => $this->sale->isActive()
         ];
     }
 }

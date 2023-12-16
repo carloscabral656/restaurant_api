@@ -4,8 +4,8 @@ namespace App\Services\Restaurants;
 
 use App\Models\Restaurant;
 use App\Services\ServiceAbstract;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Exception;
 
 class RestaurantsService extends ServiceAbstract
 {
@@ -31,31 +31,32 @@ class RestaurantsService extends ServiceAbstract
     */
     public function index(array $filters = null) : ?Collection
     {
-        try{
-            
-            $restaurants = $this
-                        ->restaurant
-                        ->join('gastronomies', 'restaurants.id_gastronomy', '=', 'gastronomies.id', 'left')
-                        ->join('restaurant_type', 'restaurants.id_restaurant_type', '=', 'restaurant_type.id', 'left');  
-        
-            if(isset($filters)){
-                if(array_key_exists('name', $filters)){
-                    $restaurants->where('restaurants.name', 'like', "%$filters[name]%");
-                }
+        try
+        {
+            $restaurant = Restaurant::with(
+                [
+                    'gastronomy' => function($query){
+                        if(isset($filters) && array_key_exists('id_gastronomy', $filters)){
+                            $query->where('gastronomies.id', '=', $filters['id_gastronomy']);
+                        }
+                    }, 
+                    
+                    'restaurant_type' => function($query){
+                        if(isset($filters) && array_key_exists('id_type_restaurant', $filters)){
+                            $query->where('restaurant.id_type_restaurant', '=', $filters['id_type_restaurant']);
+                        }
+                    }, 
+                    
+                    'address', 'owner'
+                ]
+            );
 
-                if(array_key_exists('gastronomy', $filters)){
-                    $restaurants->where('gastronomies.id', '=', (int)$filters['gastronomy']);
-                }
-
-                if(array_key_exists('restaurant_type', $filters)){
-                    $restaurants->where('restaurant_type.id', '=', (int)$filters['restaurant_type']);
-                }
+            if(isset($filters) && array_key_exists('name', $filters))
+            {
+                $restaurant->where('restaurants.name', 'like', "%{$filters['name']}%");
             }
 
-            return $restaurants
-                ->select('restaurants.*')
-                ->orderBy('restaurants.name')
-                ->get();
+            return $restaurant->orderBy('restaurants.name')->get();
         }catch(Exception $e){
             throw $e;
         }

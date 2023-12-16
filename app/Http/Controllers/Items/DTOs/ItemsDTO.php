@@ -7,20 +7,24 @@ use App\Models\Item;
 
 class ItemsDTO {
 
-    protected SalesDTO $salesDTO;
+    private Item $item;
 
-    public function __construct() {
-        $this->salesDTO = app(SalesDTO::class);
+    public function __construct(Item $item) 
+    {
+        $this->item = $item;
     }
 
-    public function createDTO(Item $i): array
+    public function createDTO(): array
     {
+
+        $sale = (new SalesDTO($this->item->sales))->createDTO();
+
         return [
-            "name" => $i->name,
-            "description" => $i->description,
-            "img_item"    => asset("/itens/{$i->img_item}"),
-            "unit_price"  => $i->unit_price,
-            "sale" => $this->salesDTO->createDTO($i->sale)
+            "name"        => $this->item->name,
+            "description" => $this->item->description,
+            "img_item"    => asset("/itens/{$this->item->img_item}"),
+            "unit_price"  => $this->item->unit_price,
+            "sale"        => $sale
         ];
     }
 }

@@ -6,19 +6,28 @@ use App\Models\Address;
 
 class AddressesDTO
 {
-    public function __construct()
+
+    private Address $address;
+
+    public function __construct(Address $address)
     {
+        $this->address = $address;
     }
 
-    public function createDTO(Address $a): array
+    public function createDTO(): array
     {
         return [
-            'id'      => $a->id,
-            "address" => $a->address,
-            "neighborhood" => $a->neighborhood,
-            "number"    => $a->number,
-            "city"      => $a->city,
-            "state"     => $a->state
+            'id'      => $this->address->id,
+            "address" => $this->address->address,
+            "neighborhood" => $this->address->neighborhood,
+            "number"    => $this->address->number,
+            "city"      => $this->address->city,
+            "state"     => $this->address->state
         ];
+    }
+
+    public function createAddressAsString(): string
+    {
+        return "{$this->address->address} - {$this->address->neighborhood}, N {$this->address->number}, {$this->address->city} - {$this->address->state}";
     }
 }

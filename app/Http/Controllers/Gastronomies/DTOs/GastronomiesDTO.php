@@ -6,11 +6,16 @@ use App\Models\Gastronomy;
 
 class GastronomiesDTO {
 
-    public function createDTO(Gastronomy $gastronomy){
-        return [
-            "id"          => $gastronomy->id,
-            "description" => $gastronomy->description
-        ];
+    private Gastronomy $gastronomy;
+
+    public function __construct(Gastronomy $gastronomy)
+    {
+        $this->gastronomy = $gastronomy;
+    }
+
+    public function createDTO(): string 
+    {
+        return $this->gastronomy->description;
     }
 
 }

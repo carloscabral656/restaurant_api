@@ -6,13 +6,23 @@ use App\Models\User;
 
 class UserDTO {
 
-    public function __construct(){
+    private User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
     }
 
-    public function createDTO(User $user): array {
+    public function createDTO(): array 
+    {
         return [
-            "id"   => $user->id,
-            "name" => $user->name
+            "id"   => $this->user->id,
+            "name" => $this->user->name
         ];
+    }
+
+    public function createUserDTOAsOwner()
+    {
+        return $this->user->name;
     }
 }

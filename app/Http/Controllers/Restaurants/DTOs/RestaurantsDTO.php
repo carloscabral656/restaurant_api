@@ -9,41 +9,82 @@ use App\Http\Controllers\RestaurantsType\DTOs\RestaurantsTypeDTO;
 use App\Http\Controllers\Users\DTOs\UserDTO;
 use App\Models\Menu;
 use App\Models\Restaurant;
+use Illuminate\Database\Eloquent\Model;
 
 class RestaurantsDTO
 {
-
     protected Restaurant $restaurant;
-    protected GastronomiesDTO $gastronomyDTO;
-    protected RestaurantsTypeDTO $restaurantsTypeDTO;
-    protected MenuDTO $menuDTO;
-    protected UserDTO $userDTO;
-    protected AddressesDTO $addressesDTO;
 
-    public function __construct()
+    public function __construct(Model $restaurant)
     {
-        $this->gastronomyDTO = app(GastronomiesDTO::class);
-        $this->restaurantsTypeDTO = app(RestaurantsTypeDTO::class);
-        $this->addressesDTO = app(AddressesDTO::class);
-        $this->menuDTO = app(MenuDTO::class);
-        $this->userDTO = app(UserDTO::class);
+        $this->restaurant = $restaurant;
     }
 
-    public function createDTO(Restaurant $restaurant)
+    public function createDTO(): array
     {
-        return [
-            'id'              => $restaurant?->id,
-            'name'            => $restaurant?->name,
-            'description'     => $restaurant?->description,
-            'gastronomy'      => $this->gastronomyDTO?->createDTO($restaurant->gastronomy),
-            'restaurant_type' => $this->restaurantsTypeDTO?->createDTO($restaurant->restaurant_type),
-            'address'         => $this->addressesDTO?->createDTO($restaurant->address),
-            'owner'           => $this->userDTO?->createDTO($restaurant->owner),
-            'menus'           => $restaurant->menus?->map(function($menu){
-                return $this->menuDTO->createDTO($menu);
-            })->toArray(),
-            'evaluation'     =>  $restaurant->evaluationAvg()
+        $dataMustPresent = [];
+        $currentAttributes = $this->restaurant->getAttributes();
 
-        ];
+        if(array_key_exists('id', $currentAttributes))
+        {
+            $dataMustPresent['id'] = $this->restaurant->id;
+        }
+
+        if(array_key_exists('name', $currentAttributes))
+        {
+            $dataMustPresent['name'] = $this->restaurant->name;
+        }
+
+        if(array_key_exists('description', $currentAttributes))
+        {
+            $dataMustPresent['description'] = $this->restaurant->description;
+        }
+
+        if(array_key_exists('image_restaurant', $currentAttributes))
+        {
+            $dataMustPresent['image_restaurant'] = $this->restaurant->image_restaurant;
+        }
+
+        if($this->restaurant->relationLoaded('gastronomy'))
+        {
+            $gastronomy = (new GastronomiesDTO($this->restaurant->gastronomy))->createDTO();
+            $dataMustPresent['gastronomy'] = $gastronomy;
+        }
+
+        if($this->restaurant->relationLoaded('restaurant_type'))
+        {
+            $restaurantType = (new RestaurantsTypeDTO($this->restaurant->restaurant_type))->createDTO();
+            $dataMustPresent['restaurant_type'] = $restaurantType; 
+        }
+
+        if($this->restaurant->relationLoaded('address'))
+        {
+            $address = (new AddressesDTO($this->restaurant->address))->createAddressAsString();
+            $dataMustPresent['address'] = $address;
+        }
+
+        if($this->restaurant->relationLoaded('owner'))
+        {
+            $owner = (new UserDTO($this->restaurant->owner))->createUserDTOAsOwner();
+            $dataMustPresent['owner'] = $owner;
+        }
+
+        if($this->restaurant->relationLoaded('purchases')){
+            $dataMustPresent['purchases'] = $this->restaurant->purchases;
+        }
+
+        
+        if($this->restaurant->relationLoaded('menus'))
+        {
+            $menus = $this->restaurant?->menus?->map(function(Menu $menu) {
+                return (new MenuDTO($menu))->createDTO();
+            });
+            $dataMustPresent['menus'] = $menus;
+        }
+        
+
+        $dataMustPresent['evaluation'] = $this->restaurant->evaluationAvg();
+        
+        return $dataMustPresent;
     }
 }

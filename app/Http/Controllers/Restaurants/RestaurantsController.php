@@ -6,11 +6,15 @@ use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Restaurants\DTOs\RestaurantsDTO;
+use App\Models\Restaurant;
+use App\Models\RestaurantType;
 use App\Services\Restaurants\RestaurantsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 class RestaurantsController extends Controller
 {
@@ -33,8 +37,9 @@ class RestaurantsController extends Controller
         try{
 
             $filters = null;
-            if($request->has('filters')) $filters = (array)$request->get('filters');
+            if($request->has('filters')) $filters = $request->get('filters');
             $restaurants = $this->service->index($filters);
+            //return $restaurants;
 
             if(empty($restaurants))
             {
@@ -52,11 +57,12 @@ class RestaurantsController extends Controller
 
             // Mapping retrivied data to input in a DTO class
             $restaurants = $restaurants->map(
-                function($r)
-                {
-                    return (new RestaurantsDTO())->createDTO($r);
+                function(Restaurant $r){
+                    return (new RestaurantsDTO($r))->createDTO();
                 }
             );
+
+            return response()->json($restaurants->toArray());
 
             return (
                 new ApiResponse
