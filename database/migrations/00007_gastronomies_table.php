@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('gastronomies', function (Blueprint $table) {
             $table->id();
             $table->string("description");
+            $table->string("img_gastronomy");
             $table->timestamps();
         });
     }

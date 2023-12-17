@@ -32,15 +32,23 @@ class RestaurantsController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         try{
 
             $filters = null;
-            if($request->has('filters')) $filters = $request->get('filters');
-            $restaurants = $this->service->index($filters);
-            //return $restaurants;
+            $order = null;
+            if($request->has('filters')) 
+            {
+                $filters = $request->get('filters');
+            }
 
+            if($request->has('order'))
+            {
+                $order = $request->get('order');
+            }
+            $restaurants = $this->service->index($filters, $order);
+        
             if(empty($restaurants))
             {
                 return
@@ -179,7 +187,7 @@ class RestaurantsController extends Controller
                 new ApiResponse
                 (
                     success: true,
-                    data   : $restaurant->toArray(),
+                    data   : (new RestaurantsDTO($restaurant))->createDTO(),
                     message: trans('Responses/Restaurants.Found'),
                     code   : HttpStatus::OK
                 )

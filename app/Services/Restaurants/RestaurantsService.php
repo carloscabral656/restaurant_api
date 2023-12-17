@@ -6,6 +6,7 @@ use App\Models\Restaurant;
 use App\Services\ServiceAbstract;
 use Illuminate\Database\Eloquent\Collection;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 
 class RestaurantsService extends ServiceAbstract
 {
@@ -29,7 +30,7 @@ class RestaurantsService extends ServiceAbstract
      * @param array $filters
      * @return ?Collection
     */
-    public function index(array $filters = null) : ?Collection
+    public function index(array $filters = null, array $order = null) : ?Collection
     {
         try
         {
@@ -56,10 +57,29 @@ class RestaurantsService extends ServiceAbstract
                 $restaurant->where('restaurants.name', 'like', "%{$filters['name']}%");
             }
 
-            return $restaurant->orderBy('restaurants.name')->get();
-        }catch(Exception $e){
+            if(isset($order) && array_key_exists('name', $order))
+            {
+                $restaurant->orderBy('restaurants.name');
+            }
+
+            return $restaurant->get()->take(100);
+
+        }catch(Exception $e)
+        {
             throw $e;
         }
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $id
+     * @return ?Model
+     */
+    public function findBy($id) : ?Model
+    {
+        return Restaurant::with(['gastronomy', 'menus'])->first();
+    }
+
 
 }

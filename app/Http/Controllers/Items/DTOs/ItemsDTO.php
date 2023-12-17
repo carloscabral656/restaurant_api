@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Items\DTOs;
 
-use App\Http\Sales\DTOs\SalesDTO;
+use App\Http\Controllers\Sales\DTOs\SalesDTO;
 use App\Models\Item;
 
 class ItemsDTO {
@@ -17,12 +17,13 @@ class ItemsDTO {
     public function createDTO(): array
     {
 
-        $sale = (new SalesDTO($this->item->sales))->createDTO();
+        $sale = (new SalesDTO($this->item->sale))->createDTO();
 
         return [
             "name"        => $this->item->name,
             "description" => $this->item->description,
             "img_item"    => asset("/itens/{$this->item->img_item}"),
+            "type_item"   => $this->item->type_item,
             "unit_price"  => $this->item->unit_price,
             "sale"        => $sale
         ];

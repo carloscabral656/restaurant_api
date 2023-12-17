@@ -17,8 +17,8 @@ class AddressesDTO
     public function createDTO(): array
     {
         return [
-            'id'      => $this->address->id,
-            "address" => $this->address->address,
+            "id"      => $this->address->id,
+            "street"  => $this->address->address,
             "neighborhood" => $this->address->neighborhood,
             "number"    => $this->address->number,
             "city"      => $this->address->city,

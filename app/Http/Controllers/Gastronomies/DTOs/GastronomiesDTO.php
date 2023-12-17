@@ -13,9 +13,13 @@ class GastronomiesDTO {
         $this->gastronomy = $gastronomy;
     }
 
-    public function createDTO(): string 
+    public function createDTO(): array 
     {
-        return $this->gastronomy->description;
+        return [
+            "id"          => $this->gastronomy->id,
+            "img_gastronomy" => asset($this->gastronomy->img_gastronomy),
+            "description" => $this->gastronomy->description
+        ];
     }
 
 }

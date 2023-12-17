@@ -20,11 +20,12 @@ class MenuDTO {
             $item = (new ItemsDTO($item))->createDTO();
             return $item;
         });
+        
         return [
             'id'   => (int)$this->menu->id,
             'name' => (string)$this->menu->name,
             'description' => (string)$this->menu->description,
-            'itens' => (array)$itens
+            'itens' => $itens
         ];
     }
 }

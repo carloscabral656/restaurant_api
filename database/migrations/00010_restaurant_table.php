@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('description');
-            $table->string('image_restaurant')->nullable();
+            $table->string('img_restaurant')->nullable();
 
             $table->unsignedBigInteger('id_gastronomy');
             $table->foreign('id_gastronomy')->references('id')->on('gastronomies');

@@ -9,13 +9,12 @@ use App\Http\Controllers\RestaurantsType\DTOs\RestaurantsTypeDTO;
 use App\Http\Controllers\Users\DTOs\UserDTO;
 use App\Models\Menu;
 use App\Models\Restaurant;
-use Illuminate\Database\Eloquent\Model;
 
 class RestaurantsDTO
 {
     protected Restaurant $restaurant;
 
-    public function __construct(Model $restaurant)
+    public function __construct(Restaurant $restaurant)
     {
         $this->restaurant = $restaurant;
     }
@@ -40,9 +39,9 @@ class RestaurantsDTO
             $dataMustPresent['description'] = $this->restaurant->description;
         }
 
-        if(array_key_exists('image_restaurant', $currentAttributes))
+        if(array_key_exists('img_restaurant', $currentAttributes))
         {
-            $dataMustPresent['image_restaurant'] = $this->restaurant->image_restaurant;
+            $dataMustPresent['img_restaurant'] = asset($this->restaurant->image_restaurant);
         }
 
         if($this->restaurant->relationLoaded('gastronomy'))
@@ -59,13 +58,13 @@ class RestaurantsDTO
 
         if($this->restaurant->relationLoaded('address'))
         {
-            $address = (new AddressesDTO($this->restaurant->address))->createAddressAsString();
+            $address = (new AddressesDTO($this->restaurant->address))->createDTO();
             $dataMustPresent['address'] = $address;
         }
 
         if($this->restaurant->relationLoaded('owner'))
         {
-            $owner = (new UserDTO($this->restaurant->owner))->createUserDTOAsOwner();
+            $owner = (new UserDTO($this->restaurant->owner))->createDTO();
             $dataMustPresent['owner'] = $owner;
         }
 

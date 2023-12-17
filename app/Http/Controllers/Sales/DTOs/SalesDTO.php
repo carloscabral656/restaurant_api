@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Sales\DTOs;
+namespace App\Http\Controllers\Sales\DTOs;
 
 use App\Models\Sale;
-use Carbon\Carbon;
 
 class SalesDTO
 {

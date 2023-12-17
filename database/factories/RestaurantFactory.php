@@ -35,7 +35,7 @@ class RestaurantFactory extends Factory
             'description'   => 'The best food of',
             'id_gastronomy' => (int)$randomGastronomy,
             'id_restaurant_type' => (int)$randomRestaurantType,
-            'image_restaurant' => null,
+            'img_restaurant'   => "/itens/qwert.jpg", // Image Name
             'id_owner' => 1,
             'id_address' => 1
         ];

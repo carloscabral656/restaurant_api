@@ -15,7 +15,10 @@ class RestaurantsTypeDTO {
 
     public function createDTO()
     {
-        return $this->restaurantType->description;
+        return [
+            "id"          => $this->restaurantType->id,
+            "description" => $this->restaurantType->description
+        ];
     }
 
 }

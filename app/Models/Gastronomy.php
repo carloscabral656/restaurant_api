@@ -11,7 +11,7 @@ class Gastronomy extends Model
 
     protected $table = "gastronomies";
     protected $primaryKey = "id";
-    protected $fillable = ["description"];
+    protected $fillable = ["description", "img_gastronomy"];
 
     public function restaurants(){
         return $this->belongsTo(Restaurant::class, 'id_gastronomy', 'id');

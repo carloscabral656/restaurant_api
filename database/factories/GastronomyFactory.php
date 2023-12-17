@@ -22,8 +22,12 @@ class GastronomyFactory extends Factory
             'Chinese', 'Indian', 'Korean', 'Peruvian', 'Vegetarian'
         ];
 
+        $choosenGastronomy = $this->faker->unique()->randomElement($gastronomies);
+        $img = strtolower($choosenGastronomy);
+        
         return [
-            'description' => $this->faker->unique()->randomElement($gastronomies),
+            'description' => $choosenGastronomy,
+            'img_gastronomy' => "/gastronomies/$img.jpg",
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
