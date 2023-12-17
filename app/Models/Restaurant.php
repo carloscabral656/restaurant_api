@@ -24,6 +24,8 @@ class Restaurant extends Model
         "id_address"
     ];
 
+    public $with = ["gastronomy"];
+
     public function evaluationAvg(): ?float 
     {
         return round($this->purchases?->pluck('evaluation')?->pluck('evaluation')?->avg(), 1);

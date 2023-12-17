@@ -20,6 +20,7 @@ class ItemsDTO {
         $sale = (new SalesDTO($this->item->sale))->createDTO();
 
         return [
+            "id"          =>$this->item->id,
             "name"        => $this->item->name,
             "description" => $this->item->description,
             "img_item"    => asset("/itens/{$this->item->img_item}"),

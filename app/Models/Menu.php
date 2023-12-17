@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Menu extends Model
@@ -19,6 +20,11 @@ class Menu extends Model
     ];
 
     protected $with = ['itens'];
+
+    public function restaurant(): BelongsTo
+    {
+        return $this->belongsTo(Restaurant::class, 'id_restaurant', 'id');
+    }
 
     public function itens(): HasMany
     {
