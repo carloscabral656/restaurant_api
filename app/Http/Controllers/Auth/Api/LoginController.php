@@ -20,7 +20,7 @@ class LoginController extends Controller
      * @param Request $request
      * @return JsonResponse
     */
-    public function login(AuthRequest $request) : JsonResponse
+    public function login(AuthRequest $request): JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
         if(!auth()->attempt($credentials))
