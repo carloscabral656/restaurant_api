@@ -9,4 +9,8 @@ class TypeItem extends Model
 {
     use HasFactory;
     protected $table = 'type_item';
+
+    protected $fillable = [
+        'description'
+    ];
 }

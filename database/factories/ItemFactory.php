@@ -4,16 +4,15 @@ namespace Database\Factories;
 
 use App\Models\Menu;
 use App\Models\Sale;
-use App\Models\TypeItem;
-use Database\Seeders\MenuSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Item>
  */
 class ItemFactory extends Factory
-{
-    static $tipicalFood = array(
+{  
+
+    static $tipicalDish = array(
         'Arabic' => array('Hummus', 'Falafel', 'Tabbouleh', 'Shawarma', 'Baklava'),
         'Brazilian' => array('Feijoada', 'Pão de Queijo', 'Moqueca', 'Coxinha', 'Brigadeiro'),
         'Japanese' => array('Sushi', 'Tempura', 'Ramen', 'Okonomiyaki', 'Tonkatsu'),
@@ -36,27 +35,47 @@ class ItemFactory extends Factory
      */
     public function definition()
     {       
-        $typeItem = TypeItem::all()->pluck('id');
         $sales = Sale::all()->pluck('id');
         $unitPrice = rand(0, 100) / 3;
 
         return [
-            "id_type_item" => $typeItem->random(),
             "id_sale"      => $sales->random(),
             "description"  => '-',
             "unit_price"   => $unitPrice
         ];
     }
 
-    public function withCustomMenu(int $idMenu)
+    public function dishForCustomMenu(int $idMenu)
     {
         return $this->state(function(array $attributes) use($idMenu) {
             $gastronomy = Menu::with(['restaurant'])->where('id', '=', $idMenu)->first()->restaurant->gastronomy->description;
-            $foodsName = self::$tipicalFood[$gastronomy];
+            $foodsName = self::$tipicalDish[$gastronomy];
             $foodName = $this->faker->randomElement($foodsName);
             return [
+                "id_type_item" => 1,
                 'name' => $foodName,
                 'img_item' => strtolower(str_replace(' ', '', $foodName) . '.jpg'),
+                'id_menu' => $idMenu
+            ];
+        });
+    }
+
+    public function drinkForCustomMenu(int $idMenu)
+    {
+        $drinks = array(
+            'Água com gás',
+            'Refrigerante',
+            'Suco natural',
+            'Cerveja',
+            'Vinho'
+        );
+
+        return $this->state(function(array $attributes) use($idMenu, $drinks) {
+            $drink = array_shift($drinks);
+            return [
+                "id_type_item" => 2,
+                'name' => $drink,
+                'img_item' => mb_strtolower(str_replace(' ', '', $drink) . '.jpg'),
                 'id_menu' => $idMenu
             ];
         });

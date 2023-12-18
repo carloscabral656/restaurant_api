@@ -14,6 +14,6 @@ class TypeItemSeeder extends Seeder
      */
     public function run()
     {
-        TypeItem::factory(6)->create();
+        TypeItem::factory(2)->create();
     }
 }

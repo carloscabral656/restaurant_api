@@ -10,23 +10,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TypeItemFactory extends Factory
 {
+
+    static $typeItens = [
+        'Dish',
+        'Drink'
+    ];
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     public function definition()
-    {
-        $typeItens = [
-            'Met',
-            'Chiken',
-            'Pork',
-            'Vegetable',
-            'Fruit',
-            'Drinks'
-        ];
+    {   
         return [
-            'description' => array_shift($typeItens),
+            'description' => array_shift(self::$typeItens),
             'created_at'  => Carbon::now(),
             'updated_at'  => Carbon::now()
         ];

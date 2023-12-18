@@ -18,9 +18,10 @@ class ItemSeeder extends Seeder
     public function run()
     {
         $menus = Menu::all();
-        $qtItemPerMenu = 10;
+        $qtItemPerMenu = 5;
         $menus->map(function($menu) use($qtItemPerMenu) {
-            Item::factory($qtItemPerMenu)->withCustomMenu($menu->id)->create();
+            Item::factory($qtItemPerMenu)->dishForCustomMenu($menu->id)->create();
+            Item::factory($qtItemPerMenu)->drinkForCustomMenu($menu->id)->create();
         });
     }
 }
