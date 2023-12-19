@@ -41,7 +41,7 @@ class RestaurantsDTO
 
         if(array_key_exists('img_restaurant', $currentAttributes))
         {
-            $dataMustPresent['img_restaurant'] = asset($this->restaurant->image_restaurant);
+            $dataMustPresent['img_restaurant'] = asset($this->restaurant->img_restaurant);
         }
 
         if($this->restaurant->relationLoaded('gastronomy'))
@@ -53,7 +53,7 @@ class RestaurantsDTO
         if($this->restaurant->relationLoaded('restaurant_type'))
         {
             $restaurantType = (new RestaurantsTypeDTO($this->restaurant->restaurant_type))->createDTO();
-            $dataMustPresent['restaurant_type'] = $restaurantType; 
+            $dataMustPresent['restaurant_type'] = $restaurantType;
         }
 
         if($this->restaurant->relationLoaded('address'))
@@ -72,7 +72,7 @@ class RestaurantsDTO
             $dataMustPresent['purchases'] = $this->restaurant->purchases;
         }
 
-        
+
         if($this->restaurant->relationLoaded('menus'))
         {
             $menus = $this->restaurant?->menus?->map(function(Menu $menu) {
@@ -80,10 +80,10 @@ class RestaurantsDTO
             });
             $dataMustPresent['menus'] = $menus;
         }
-        
+
 
         $dataMustPresent['evaluation'] = $this->restaurant->evaluationAvg();
-        
+
         return $dataMustPresent;
     }
 }

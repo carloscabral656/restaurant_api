@@ -29,13 +29,17 @@ class RestaurantFactory extends Factory
 
         $randomGastronomy = rand(1, Gastronomy::count());
         $randomRestaurantType = rand(1, RestaurantType::count());
+        $randomRestaurantImage = ['restaurant_1.jpg', 'restaurant_2.jpg', 'restaurant_3.jpg', 'restaurant_4.jpg', 'restaurant_5.jpg'];
+
+        $selectedGatronomy = Gastronomy::where('id', '=', $randomGastronomy)->first();
 
         return [
-            'name'          => "{$this->faker->name()} Restaurant",
-            'description'   => 'The best food of',
+            'name'          => "{$this->faker->company()} Restaurant",
+            'description'   => "The best {$selectedGatronomy->description} food!",
+            'telephone'     => $this->faker->phoneNumber(),
             'id_gastronomy' => (int)$randomGastronomy,
             'id_restaurant_type' => (int)$randomRestaurantType,
-            'img_restaurant'   => "/itens/qwert.jpg", // Image Name
+            'img_restaurant'   => "/restaurants/{$this->faker->randomElement($randomRestaurantImage)}", // Image Name
             'id_owner' => 1,
             'id_address' => 1
         ];

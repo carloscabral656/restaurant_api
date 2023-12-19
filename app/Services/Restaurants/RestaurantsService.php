@@ -30,7 +30,7 @@ class RestaurantsService extends ServiceAbstract
      * @param name $name
      * @return ?Collection
     */
-    public function index(string $name = null, string $item = null) : ?Collection
+    public function index(string $restaurant = null, string $item = null) : ?Collection
     {
         try
         {
@@ -50,9 +50,9 @@ class RestaurantsService extends ServiceAbstract
 
 
             // Global Filters
-            if(isset($name))
+            if(isset($restaurant))
             {
-                $restaurants->where('name', 'like', "%{$name}%");
+                $restaurants->where('name', 'like', "%{$restaurant}%");
             }
 
             return $restaurants->get();

@@ -36,13 +36,13 @@ class RestaurantsController extends Controller
     {
         try{
 
-            $name = null;
+            $restaurant = null;
             $item = null;
 
             // Restaurant's name
-            if($request->has('name'))
+            if($request->has('restaurant'))
             {
-                $name = $request->get('name');
+                $restaurant = $request->get('restaurant');
             }
 
             // Restaurant's order
@@ -52,7 +52,7 @@ class RestaurantsController extends Controller
             }
 
             // Query
-            $restaurants = $this->service->index($name, $item);
+            $restaurants = $this->service->index($restaurant, $item);
 
             if(empty($restaurants))
             {

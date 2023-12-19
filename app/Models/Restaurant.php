@@ -17,6 +17,7 @@ class Restaurant extends Model
     protected $fillable = [
         "name",
         "description",
+        "telephone",
         "image_restaurant",
         "id_gastronomy",
         "id_restaurant_type",
@@ -26,7 +27,7 @@ class Restaurant extends Model
 
     public $with = ["gastronomy"];
 
-    public function evaluationAvg(): ?float 
+    public function evaluationAvg(): ?float
     {
         return round($this->purchases?->pluck('evaluation')?->pluck('evaluation')?->avg(), 1);
     }

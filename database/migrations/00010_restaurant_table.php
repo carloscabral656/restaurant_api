@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('description');
+            $table->string('telephone');
             $table->string('img_restaurant')->nullable();
 
             $table->unsignedBigInteger('id_gastronomy');
