@@ -36,19 +36,24 @@ class RestaurantsController extends Controller
     {
         try{
 
-            $filters = null;
-            $order = null;
-            if($request->has('filters')) 
+            $name = null;
+            $item = null;
+
+            // Restaurant's name
+            if($request->has('name'))
             {
-                $filters = $request->get('filters');
+                $name = $request->get('name');
             }
 
-            if($request->has('order'))
+            // Restaurant's order
+            if($request->has('item'))
             {
-                $order = $request->get('order');
+                $item = $request->get('item');
             }
-            $restaurants = $this->service->index($filters, $order);
-        
+
+            // Query
+            $restaurants = $this->service->index($name, $item);
+
             if(empty($restaurants))
             {
                 return

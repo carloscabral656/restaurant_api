@@ -26,43 +26,36 @@ class RestaurantsService extends ServiceAbstract
 
     /**
      * Display a listing of the resource.
-     *  
-     * @param array $filters
+     *
+     * @param name $name
      * @return ?Collection
     */
-    public function index(array $filters = null, array $order = null) : ?Collection
+    public function index(string $name = null, string $item = null) : ?Collection
     {
         try
         {
-            $restaurant = Restaurant::with(
+            $restaurants = Restaurant::with(
                 [
-                    'gastronomy' => function($query){
-                        if(isset($filters) && array_key_exists('id_gastronomy', $filters)){
-                            $query->where('gastronomies.id', '=', $filters['id_gastronomy']);
-                        }
-                    }, 
-                    
-                    'restaurant_type' => function($query){
-                        if(isset($filters) && array_key_exists('id_type_restaurant', $filters)){
-                            $query->where('restaurant.id_type_restaurant', '=', $filters['id_type_restaurant']);
-                        }
-                    }, 
-                    
-                    'address', 'owner'
+                    'gastronomy',
+                    'restaurant_type',
+                    'address',
+                    'owner'
                 ]
-            );
+            )->withWhereHas('menus.itens', function($query) use($item) {
+                if(isset($item)){
+                    $query->where('name', 'like', "%{$item}%");
+                    $query->orWhere('description', 'like', "%{$item}%");
+                }
+            });;
 
-            if(isset($filters) && array_key_exists('name', $filters))
+
+            // Global Filters
+            if(isset($name))
             {
-                $restaurant->where('restaurants.name', 'like', "%{$filters['name']}%");
+                $restaurants->where('name', 'like', "%{$name}%");
             }
 
-            if(isset($order) && array_key_exists('name', $order))
-            {
-                $restaurant->orderBy('restaurants.name');
-            }
-
-            return $restaurant->get()->take(100);
+            return $restaurants->get();
 
         }catch(Exception $e)
         {

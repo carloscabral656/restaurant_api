@@ -26,7 +26,7 @@ class ServiceAbstract
      *
      * @return Collection
     */
-    public function index(array $filters = null) : ?Collection
+    public function index(string $name = null) : ?Collection
     {
         return $this->model->all();
     }
@@ -62,7 +62,7 @@ class ServiceAbstract
      * @param  int  $id
      * @return ?Model
      */
-    public function update(array $data, $id) 
+    public function update(array $data, $id)
     {
         $resource = $this->model->find($id);
         if(empty($resource)){
