@@ -9,7 +9,7 @@ class ItemsDTO {
 
     private Item $item;
 
-    public function __construct(Item $item) 
+    public function __construct(Item $item)
     {
         $this->item = $item;
     }
@@ -23,7 +23,7 @@ class ItemsDTO {
             "id"          =>$this->item->id,
             "name"        => $this->item->name,
             "description" => $this->item->description,
-            "img_item"    => asset("/itens/qwert.jpg"),
+            "img_item"    => asset("/itens/{$this->item->img_item}"),
             "type_item"   => $this->item->type_item,
             "unit_price"  => $this->item->unit_price,
             "sale"        => $sale
