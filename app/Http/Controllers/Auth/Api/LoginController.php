@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth\Api;
 use App\DTOs\ApiResponse;
 use App\Helpers\HttpStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Users\DTOs\UserDTO;
 use App\Http\Requests\Auth\Api\AuthRequest;
 use App\Models\User;
 use Exception;
@@ -97,7 +98,7 @@ class LoginController extends Controller
                 new ApiResponse
                 (
                     success: true,
-                    data   : $user,
+                    data   : (new UserDTO($user))->createDTO(),
                     message: '',
                     code   : HttpStatus::OK
                 )

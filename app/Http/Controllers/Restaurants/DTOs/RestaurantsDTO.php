@@ -81,6 +81,10 @@ class RestaurantsDTO
             $dataMustPresent['menus'] = $menus;
         }
 
+        if(array_key_exists('telephone', $currentAttributes)){
+            $dataMustPresent['phone'] = $this->restaurant->telephone;
+        }
+
 
         $dataMustPresent['evaluation'] = $this->restaurant->evaluationAvg();
 

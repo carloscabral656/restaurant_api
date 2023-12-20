@@ -71,7 +71,7 @@ class RestaurantsService extends ServiceAbstract
      */
     public function findBy($id) : ?Model
     {
-        return Restaurant::with(['gastronomy', 'menus'])->find($id);
+        return Restaurant::with(['gastronomy', 'menus', 'address'])->find($id);
     }
 
 

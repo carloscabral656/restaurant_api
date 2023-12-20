@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users\DTOs;
 
+use App\Http\Controllers\Addresses\DTOs\AddressesDTO;
 use App\Models\User;
 
 class UserDTO {
@@ -17,7 +18,10 @@ class UserDTO {
     {
         return [
             "id"   => $this->user->id,
-            "name" => $this->user->name
+            "name" => $this->user->name,
+            "email" => $this->user->email,
+            "roles" => [],
+            "address" => (new AddressesDTO($this->user->address))->createDTO()
         ];
     }
 
