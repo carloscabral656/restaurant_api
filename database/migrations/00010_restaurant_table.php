@@ -35,6 +35,10 @@ return new class extends Migration
             $table->unsignedBigInteger("id_location");
             $table->foreign("id_location")->references("id")->on("locations");
 
+
+            $table->unsignedBigInteger("id_cupon");
+            $table->foreign("id_cupon")->references("id")->on("cupons");
+
             $table->timestamps();
         });
     }
