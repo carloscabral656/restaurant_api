@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('description');
             $table->float('discount');
             $table->timestamp('begin_at');
